@@ -7,6 +7,12 @@ package ca.cmpt213.a2.model;
  */
 public class Model {
     //OBJECTS of classes
+
+    //Maze is 20x15
+    //Leaves 18x13 inside to explore
+    private static final int MAZE_COLUMNS = 20;
+    private static final int MAZE_ROWS = 15;
+
     //Generate maze until it meets requirements
     //Make new hero
     //Make new monster x 3
@@ -24,5 +30,17 @@ public class Model {
         //check Monster status x 3
         //get Current Maze
         //update Maze cells
+
+    public static void main(String[] args){
+        Maze currentMaze = new Maze(MAZE_ROWS, MAZE_COLUMNS);
+        currentMaze.displayMaze();
+        //currentMaze.divideMaze(0, 0, MAZE_WIDTH, MAZE_HEIGHT, currentMaze.horizontalBisection(MAZE_WIDTH, MAZE_HEIGHT));
+        //generate maze walls
+            //stored in 2D array as zeroes and ones
+        //determine cell contents
+            //walls or empty
+            //hero corner
+            //monsters and powers
+    }
 
 }

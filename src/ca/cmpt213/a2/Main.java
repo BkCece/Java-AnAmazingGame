@@ -21,4 +21,8 @@ public class Main {
     //move player
         //this triggers all subsequent movements/actions using Model
 
+    public static void main(String[] args){
+        System.out.println("Main BOI");
+    }
+
 }
