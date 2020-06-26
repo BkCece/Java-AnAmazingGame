@@ -32,8 +32,15 @@ public class Model {
         //update Maze cells
 
     public static void main(String[] args){
-        Maze currentMaze = new Maze(MAZE_ROWS, MAZE_COLUMNS);
+        Maze currentMaze;
+        int count = 0;
+        do{
+            currentMaze = new Maze(MAZE_ROWS, MAZE_COLUMNS);
+            System.out.println(count++);
+        }while(currentMaze.verifyMaze() == false);
+
         currentMaze.displayMaze();
+
         //currentMaze.divideMaze(0, 0, MAZE_WIDTH, MAZE_HEIGHT, currentMaze.horizontalBisection(MAZE_WIDTH, MAZE_HEIGHT));
         //generate maze walls
             //stored in 2D array as zeroes and ones

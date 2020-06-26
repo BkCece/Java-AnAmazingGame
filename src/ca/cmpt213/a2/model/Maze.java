@@ -106,6 +106,36 @@ public class Maze {
 
     }
 
+    //Method to check that the created maze fits requirements
+    //Returns true if verified
+    //Returns false if needs to be regenerated
+    public boolean verifyMaze(){
+        //Check for any zeroes
+        for (int i = 0; i < row; i++){
+            for (int j = 0; j < col; j++){
+                if (maze[i][j] == 0)
+                    return false;
+            }
+        }
+
+        //Make sure corners are twos
+        if (maze[1][1] == 1)
+            return false;
+        if (maze[1][col-2] == 1)
+            return false;
+        if (maze[row-2][1] == 1)
+            return false;
+        if (maze[row-2][col-2] == 1)
+            return false;
+
+        //Maze meets requirements
+        return true;
+    }
+
+    public void addCycles(){
+        
+    }
+
     public void displayMaze(){
         for (int i = 0; i < row; i++){
             for (int j = 0; j < col; j++){
