@@ -14,10 +14,10 @@ public interface Character {
     //abstract methods
 
     //function to check if valid movement
-    boolean verifyMovement(char c);
+    boolean verifyMovement(int d, int[][] m, int r, int c);
 
     //moves character
-    void move(int r1, int r2, int c1, int c2);
+    void move(int r, int c, int d, int[][] m);
 
     //changes character's status
     void changeStatus(boolean b);

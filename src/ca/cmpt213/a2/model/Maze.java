@@ -140,6 +140,14 @@ public class Maze {
         if (maze[getMazeRows()-2][getMazeColumns()-2] == 1)
             return false;
 
+        //Remove any 2x2 chunks
+        for (int i = 0; i < getMazeRows() - 1; i++){
+            for (int j = 0; j < getMazeColumns() - 1; j++){
+                if (maze[i][j] == 1 && maze[i + 1][j] == 1 && maze[i][j + 1] == 1 && maze[i + 1][j + 1] == 1)
+                    return false;
+            }
+        }
+
         //Maze meets requirements
         return true;
     }

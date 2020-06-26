@@ -38,13 +38,61 @@ public class Hero implements Character {
 
     //function to check if valid movement
     //takes choice and compares it to maze options
-    public boolean verifyMovement(char choice){
+    public boolean verifyMovement(int direction, int[][] maze, int heroRow, int heroCol){
+        if (direction == 0){
+            //Move up
+            if(maze[heroRow - 1][heroCol] == 1)
+                return false;
+            else
+                return true;
+
+        }else if (direction == 1){
+            //Move left
+            if(maze[heroRow][heroCol - 1] == 1)
+                return false;
+            else
+                return true;
+
+        }else if(direction == 2){
+            //Move down
+            if(maze[heroRow + 1][heroCol] == 1)
+                return false;
+            else
+                return true;
+
+        }else if (direction == 3){
+            //Move right
+            if(maze[heroRow][heroCol + 1] == 1)
+                return false;
+            else
+                return true;
+        }
 
         return false;
     }
 
     //moves character from start to end position, as given
-    public void move(int startRow, int endRow, int startCol, int endCol){
+    public void move(int startRow, int startCol, int direction, int[][] maze){
+        //set prev location to 2
+        maze[startRow][startCol] = 2;
+
+        //move to next spot
+        if(direction == 0){
+            //move up
+            setRow(startRow - 1);
+
+        }else if (direction == 1){
+            //move left
+            setCol(startCol - 1);
+
+        }else if (direction == 2){
+            //move down
+            setRow(startRow + 1);
+
+        }else if (direction == 3){
+            //move right
+            setCol(startCol + 1);
+        }
 
     }
 

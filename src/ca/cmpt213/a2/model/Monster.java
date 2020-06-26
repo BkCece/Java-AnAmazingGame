@@ -48,13 +48,13 @@ public class Monster implements Character{
 
     //function to check if valid movement
     //takes choice and compares it to maze options
-    public boolean verifyMovement(char choice){
+    public boolean verifyMovement(int direction, int[][] maze, int monstRow, int monstCol){
 
         return false;
     }
 
     //moves character from start to end position, as given
-    public void move(int startRow, int endRow, int startCol, int endCol){
+    public void move(int startRow, int startCol, int direction, int[][] maze){
 
     }
 

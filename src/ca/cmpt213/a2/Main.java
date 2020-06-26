@@ -47,25 +47,44 @@ public class Main {
             monsterCols.add(mainModel.getModelMonsters()[i].getCol());
         }
 
-        mainMazeUI.placeCharacters(
-                mainMaze,
-                mainModel.getModelHero().getRow(),
-                mainModel.getModelHero().getCol(),
-                monsterRows,
-                monsterCols,
-                mainModel.getModelPower().getRow(),
-                mainModel.getModelPower().getCol()
-        );
+        do {
+            mainMazeUI.placeCharacters(
+                    mainMaze,
+                    mainModel.getModelHero().getRow(),
+                    mainModel.getModelHero().getCol(),
+                    monsterRows,
+                    monsterCols,
+                    mainModel.getModelPower().getRow(),
+                    mainModel.getModelPower().getCol()
+            );
 
-        //Display maze
-        mainModel.setMazeVisibility();
-        mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
+            //Display maze
+            mainModel.setMazeVisibility();
+            mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
-        //Request and get user input with TestUI
-        int directionChoice = mainTextUI.getUserInput();
+            int directionChoice;
+            do {
+                //Request and get user input with TestUI
+                directionChoice = mainTextUI.getUserInput();
 
-        //move player based on direction choice
-        //this triggers all subsequent movements/actions using Model
+            } while (!mainModel.getModelHero().verifyMovement(
+                    directionChoice,
+                    mainMaze,
+                    mainModel.getModelHero().getRow(),
+                    mainModel.getModelHero().getCol()
+            ));
+
+
+            //move player based on direction choice
+            mainModel.getModelHero().move(
+                    mainModel.getModelHero().getRow(),
+                    mainModel.getModelHero().getCol(),
+                    directionChoice,
+                    mainMaze
+            );
+
+            //this triggers all subsequent movements/actions using Model
+        }while (true);
     }
 
 }
