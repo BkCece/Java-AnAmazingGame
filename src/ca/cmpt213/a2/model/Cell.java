@@ -2,6 +2,8 @@ package ca.cmpt213.a2.model;
 
 /**
  * Class to manage all features of an individual cell
+ * Not going to use it, maybe
+ * seems redundant
  */
 public class Cell {
     //each cell has position in array

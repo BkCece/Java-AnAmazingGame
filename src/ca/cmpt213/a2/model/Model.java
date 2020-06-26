@@ -1,5 +1,7 @@
 package ca.cmpt213.a2.model;
 
+import java.util.Random;
+
 /**
  * Class to manage overall model related concepts to be displayed,
  * including: maze (and its visability), monster, hero, power
@@ -8,16 +10,89 @@ package ca.cmpt213.a2.model;
 public class Model {
     //OBJECTS of classes
 
-    //Maze is 20x15
-    //Leaves 18x13 inside to explore
-    private static final int MAZE_COLUMNS = 20;
-    private static final int MAZE_ROWS = 15;
 
-    //Generate maze until it meets requirements
-    //Make new hero
-    //Make new monster x 3
-        //Make new power x 3
-    //setCurrentCell
+    private static int NUMBER_OF_MONSTERS = 3;
+    private Maze currentMaze;
+    private Hero modelHero;
+    private Monster[] modelMonsters;
+    private Power modelPower;
+
+    public int getNumberOfMonsters() {
+        return NUMBER_OF_MONSTERS;
+    }
+
+    public Maze getCurrentMaze() {
+        return currentMaze;
+    }
+
+    public void setCurrentMaze(Maze currentMaze) {
+        this.currentMaze = currentMaze;
+    }
+
+    public Hero getModelHero() {
+        return modelHero;
+    }
+
+    public void setModelHero(Hero modelHero) {
+        this.modelHero = modelHero;
+    }
+
+    public Monster[] getModelMonsters() {
+        return modelMonsters;
+    }
+
+    public void setModelMonsters(Monster[] modelMonsters) {
+        this.modelMonsters = modelMonsters;
+    }
+
+    public Power getModelPower() {
+        return modelPower;
+    }
+
+    public void setModelPower(Power modelPower) {
+        this.modelPower = modelPower;
+    }
+
+    /**
+     * Initializes the positions for key characters and items in the maze
+     */
+    public void initializeCharacters(){
+        //Place hero at start
+        setModelHero(new Hero());
+        getModelHero().setRow(1);
+        getModelHero().setCol(1);
+        getModelHero().setAlive(true);
+
+        //Place monsters in corners
+        setModelMonsters(new Monster[]{
+                new Monster(), new Monster(), new Monster()
+        });
+
+        //Set first monster
+        getModelMonsters()[0].setRow(getCurrentMaze().getMazeRows() - 2);
+        getModelMonsters()[0].setCol(getCurrentMaze().getMazeColumns() - 2);
+        getModelMonsters()[0].setIsAlive(true);
+
+        //Set next 2
+        if (getNumberOfMonsters() == 3){
+            getModelMonsters()[1].setRow(1);
+            getModelMonsters()[1].setCol(getCurrentMaze().getMazeColumns() - 2);
+            getModelMonsters()[1].setIsAlive(true);
+
+            getModelMonsters()[2].setRow(getCurrentMaze().getMazeRows() - 2);
+            getModelMonsters()[2].setCol(1);
+            getModelMonsters()[2].setIsAlive(true);
+        }
+
+        //Set the power in the maze
+        setModelPower(new Power());
+        getModelPower().setRandomLocation(
+                getCurrentMaze().getMaze(),
+                getCurrentMaze().getMazeRows(),
+                getCurrentMaze().getMazeColumns()
+        );
+
+    }
 
     //Contains functions for all possible maze actions
     //implement each as turns, with player movement
@@ -31,24 +106,32 @@ public class Model {
         //get Current Maze
         //update Maze cells
 
-    public static void main(String[] args){
+    /**
+     * Creates and returns the maze as a 2D array
+     */
+    public Maze createMazeModel(){
         //Create a new maze
-        Maze currentMaze;
+        //Generate maze walls
         do{
-            currentMaze = new Maze(MAZE_ROWS, MAZE_COLUMNS);
+            setCurrentMaze(new Maze());
 
+            //Generate maze until it meets requirements
             //check for paths in corners, no zeroes, and at least 2 cycles
-        }while(currentMaze.verifyMaze() == false || currentMaze.addCycles() < 3);
+        }while(getCurrentMaze().verifyMaze() == false || getCurrentMaze().addCycles() < 3);
 
-        currentMaze.displayMaze();
+        //currentMaze.displayMaze();
 
-        //currentMaze.divideMaze(0, 0, MAZE_WIDTH, MAZE_HEIGHT, currentMaze.horizontalBisection(MAZE_WIDTH, MAZE_HEIGHT));
-        //generate maze walls
-            //stored in 2D array as zeroes and ones
         //determine cell contents
-            //walls or empty
-            //hero corner
-            //monsters and powers
+        //walls or empty
+        //hero corner
+        //monsters and powers
+
+        return getCurrentMaze();
+    }
+
+    //Return the maze as a 2D array
+    public int[][] getMainMaze(){
+        return getCurrentMaze().getMaze();
     }
 
 }

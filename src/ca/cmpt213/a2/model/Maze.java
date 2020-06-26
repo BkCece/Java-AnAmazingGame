@@ -8,30 +8,43 @@ import java.util.Random;
  * Class to generate the maze
  * Need to check for correct rendering during each game
  * Generates maze recursively
+ * Maze algorithm uses Recursive Methods and is a variation on Prim's Algorithm
  */
 public class Maze {
     //Makes each new cell object while generating
     //Stores maze in 2D array of set size
-    private final int row;
-    private final int col;
-    private final int[][] maze;
+    //Maze is 20x15
+    //Leaves 18x13 inside to explore
+    private static final int MAZE_COLUMNS = 20;
+    private static final int MAZE_ROWS = 15;
+    private int[][] maze;
 
-    public Maze(int row, int col) {
-        this.row = row;
-        this.col = col;
+    public Maze() {
         //size is 20x15, but traversal space is 18x3
         //this.
-        maze = new int[this.row][this.col];
+        maze = new int[getMazeRows()][getMazeColumns()];
         createMaze(1, 1);
     }
 
+    public int getMazeColumns() {
+        return MAZE_COLUMNS;
+    }
+
+    public int getMazeRows() {
+        return MAZE_ROWS;
+    }
+
+    public int[][] getMaze() {
+        return maze;
+    }
+
     //Create maze
-    //Empty: 0, Wall: 1, Path: 2, Adjacent: 3
+    //Empty: 0, Wall: 1, Path: 2
     public void createMaze(int currRow, int currCol){
         //Set edges and interior of maze
-        for (int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
-                if(i == 0 || j == 0 || i == (row-1) || j == (col-1)){
+        for (int i = 0; i < getMazeRows(); i++){
+            for(int j = 0; j < getMazeColumns(); j++){
+                if(i == 0 || j == 0 || i == (getMazeRows() - 1) || j == (getMazeColumns() - 1)){
                     //set walls
                     maze[i][j] = 1;
                 }else{
@@ -45,26 +58,26 @@ public class Maze {
         maze[currRow][currCol] = 2;
 
         //Put adjacent cells to start into a list
-        List<Integer[]> adjCells = new ArrayList<>();
-        adjCells.add(new Integer[]{currRow + 1 , currCol});
-        adjCells.add(new Integer[]{currRow , currCol + 1});
+        List<int[]> adjCells = new ArrayList<>();
+        adjCells.add(new int[]{currRow + 1 , currCol});
+        adjCells.add(new int[]{currRow , currCol + 1});
 
         findPath(maze, adjCells);
     }
 
     //Recursive function
-    public void findPath(int[][] reMaze, List<Integer[]> reList){
+    public void findPath(int[][] reMaze, List<int[]> reList){
         //Stop!
         if(reList.isEmpty()){
             return;
         }
 
-    //Chose random direction
+        //Chose random direction
         Random r = new Random();
         int max = reList.size() - 1;
         //((max - min) + 1) + min
         int randAdjCell = r.nextInt((max - 0) + 1) + 0;
-        Integer[] adjCell = reList.get(randAdjCell);
+        int[] adjCell = reList.get(randAdjCell);
 
         int count = 0;
 
@@ -92,18 +105,17 @@ public class Maze {
             //Check four directions for empty space
             //If empty, add to the adjacent cells list
             if(reMaze[adjCell[0] + 1][adjCell[1]] == 0)
-                reList.add(new Integer[]{adjCell[0] + 1, adjCell[1]});
+                reList.add(new int[]{adjCell[0] + 1, adjCell[1]});
             if(reMaze[adjCell[0] - 1][adjCell[1]] == 0)
-                reList.add(new Integer[]{adjCell[0] - 1, adjCell[1]});
+                reList.add(new int[]{adjCell[0] - 1, adjCell[1]});
             if(reMaze[adjCell[0]][adjCell[1] + 1] == 0)
-                reList.add(new Integer[]{adjCell[0], adjCell[1] + 1});
+                reList.add(new int[]{adjCell[0], adjCell[1] + 1});
             if(reMaze[adjCell[0]][adjCell[1] - 1] == 0)
-                reList.add(new Integer[]{adjCell[0], adjCell[1] - 1});
+                reList.add(new int[]{adjCell[0], adjCell[1] - 1});
 
             //Recursion!
             findPath(reMaze, reList);
         }
-
     }
 
     //Method to check that the created maze fits requirements
@@ -111,8 +123,8 @@ public class Maze {
     //Returns false if needs to be regenerated
     public boolean verifyMaze(){
         //Check for any zeroes
-        for (int i = 0; i < row; i++){
-            for (int j = 0; j < col; j++){
+        for (int i = 0; i < getMazeRows(); i++){
+            for (int j = 0; j < getMazeColumns(); j++){
                 if (maze[i][j] == 0)
                     return false;
             }
@@ -121,11 +133,11 @@ public class Maze {
         //Make sure corners are twos
         if (maze[1][1] == 1)
             return false;
-        if (maze[1][col-2] == 1)
+        if (maze[1][getMazeColumns()-2] == 1)
             return false;
-        if (maze[row-2][1] == 1)
+        if (maze[getMazeRows()-2][1] == 1)
             return false;
-        if (maze[row-2][col-2] == 1)
+        if (maze[getMazeRows()-2][getMazeColumns()-2] == 1)
             return false;
 
         //Maze meets requirements
@@ -136,8 +148,8 @@ public class Maze {
     //Returns number of cycles added
     public int addCycles(){
         int count = 0;
-        for (int i = 1; i < row - 1; i++){
-            for (int j = 1; j < col - 1; j++){
+        for (int i = 2; i < getMazeRows() - 2; i++){
+            for (int j = 2; j < getMazeColumns() - 2; j++){
                 if(maze[i][j] == 1){
                     //top and bottom are walls
                     if(maze[i + 1][j] == 1 && maze[i - 1][j] == 1){
@@ -163,13 +175,19 @@ public class Maze {
         return count;
     }
 
+    /**
+     * Used in testing that a proper maze can be displayed
+     * Should not be implemented in fully developed version of the application
+     * Displays maze as 2D array elements with Path: 2, Wall: 1
+     */
     public void displayMaze(){
-        for (int i = 0; i < row; i++){
-            for (int j = 0; j < col; j++){
+        for (int i = 0; i < getMazeRows(); i++){
+            for (int j = 0; j < getMazeColumns(); j++){
                 System.out.print(maze[i][j] + " ");
             }
             System.out.println();
         }
     }
+
 
 }
