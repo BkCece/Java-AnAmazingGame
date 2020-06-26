@@ -56,7 +56,10 @@ public class Main {
                 mainModel.getModelPower().getRow(),
                 mainModel.getModelPower().getCol()
         );
-        mainMazeUI.displayMazeUI(mainMaze);
+
+        //Display maze
+        mainModel.setMazeVisibility();
+        mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
         //Request and get user input with TestUI
         int directionChoice = mainTextUI.getUserInput();

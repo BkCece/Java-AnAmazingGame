@@ -8,14 +8,17 @@ import java.util.Random;
  * Contains majority of maze logic
  */
 public class Model {
+    private static final int NUMBER_OF_MONSTERS = 3;
+
     //OBJECTS of classes
-
-
-    private static int NUMBER_OF_MONSTERS = 3;
     private Maze currentMaze;
     private Hero modelHero;
     private Monster[] modelMonsters;
     private Power modelPower;
+
+    //Sets whether a cell is discovered and should be displayed
+    //Make mapping the same size as the main maze
+    private boolean[][] mazeMapping;
 
     public int getNumberOfMonsters() {
         return NUMBER_OF_MONSTERS;
@@ -51,6 +54,19 @@ public class Model {
 
     public void setModelPower(Power modelPower) {
         this.modelPower = modelPower;
+    }
+
+    //Return the maze as a 2D array
+    public int[][] getMainMaze(){
+        return getCurrentMaze().getMaze();
+    }
+
+    public boolean[][] getMazeMapping() {
+        return mazeMapping;
+    }
+
+    public void setMazeMapping(boolean[][] mazeMapping) {
+        this.mazeMapping = mazeMapping;
     }
 
     /**
@@ -108,6 +124,7 @@ public class Model {
 
     /**
      * Creates and returns the maze as a 2D array
+     * Also calls initializeMazeVisibility()
      */
     public Maze createMazeModel(){
         //Create a new maze
@@ -125,13 +142,64 @@ public class Model {
         //walls or empty
         //hero corner
         //monsters and powers
-
+        initializeMazeVisibility();
         return getCurrentMaze();
     }
 
-    //Return the maze as a 2D array
-    public int[][] getMainMaze(){
-        return getCurrentMaze().getMaze();
+
+    /**
+     * Sets beginning state of maze mapping
+     * All cells are undiscovered, except walls
+     *
+     */
+    public void initializeMazeVisibility() {
+       setMazeMapping(new boolean[getCurrentMaze().getMazeRows()][getCurrentMaze().getMazeColumns()]);
+
+        for (int i = 0; i < getCurrentMaze().getMazeRows(); i++){
+            for (int j = 0; j < getCurrentMaze().getMazeColumns(); j++){
+                if(i == 0 || j == 0 || (i == getCurrentMaze().getMazeRows() - 1) || (j == getCurrentMaze().getMazeColumns() - 1)){
+                    //make visible if cell is on the edges of the maze
+                    getMazeMapping()[i][j] = true;
+                }else{
+                    //set all others to undiscovered
+                    getMazeMapping()[i][j] = false;
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * Updates the maze mapping to the current position of the hero
+     * Makes adjacent cells visible
+     * Previously discovered cells remain visible
+     *
+     */
+    public void setMazeVisibility(){
+        for (int i = 0; i < getCurrentMaze().getMazeRows(); i++){
+            for (int j = 0; j < getCurrentMaze().getMazeColumns(); j++){
+                if((i == getModelHero().getRow() - 1) && j == (getModelHero().getCol())){
+                    //make visible if adjacent to hero: top
+                    getMazeMapping()[i][j] = true;
+
+                }else if((i == getModelHero().getRow()) && j == (getModelHero().getCol() - 1)){
+                    //make visible if adjacent to hero: left
+                    getMazeMapping()[i][j] = true;
+
+                }else if((i == getModelHero().getRow() + 1) && j == (getModelHero().getCol())){
+                    //make visible if adjacent to hero: bottom
+                    getMazeMapping()[i][j] = true;
+
+                }else if((i == getModelHero().getRow()) && j == (getModelHero().getCol() + 1)){
+                    //make visible if adjacent to hero: right
+                    getMazeMapping()[i][j] = true;
+
+                }else if(i == getModelHero().getRow() && j == getModelHero().getCol()){
+                    //make visible if where current hero is
+                    getMazeMapping()[i][j] = true;
+                }
+            }
+        }
     }
 
 }

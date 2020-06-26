@@ -39,6 +39,10 @@ public class MazeUI {
         return unexploredIcon;
     }
 
+    public static char getExploredIcon() {
+        return exploredIcon;
+    }
+
     /**
      * Displays the full maze using current UI choices
      * Creates maze from the 2D array generated in the Model Class, passed from main
@@ -46,16 +50,26 @@ public class MazeUI {
      * Hero: 3, Monster: 4, Power: 5
      *
      */
-    public void displayMazeUI(int[][] maze){
+    public void displayMazeUI(int[][] maze, boolean[][] map){
         int numRows = maze.length;
         int numCols = maze[0].length;
 
         for (int i = 0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
                 if (maze[i][j] == 1){
-                    System.out.print(getWallIcon() + " ");
+                    if(map[i][j] == true) {
+                        //only display if the map says to
+                        System.out.print(getWallIcon() + " ");
+                    }else{
+                        System.out.print(getUnexploredIcon() + " ");
+                    }
                 }else if(maze[i][j] == 2){
-                    System.out.print(getUnexploredIcon() + " ");
+                    if(map[i][j] == true){
+                        //only display if the map says to
+                        System.out.print(getExploredIcon() + " ");
+                    }else{
+                        System.out.print(getUnexploredIcon() + " ");
+                    }
                 }else if(maze[i][j] == 3){
                     System.out.print(getHeroIcon() + " ");
                 }else if(maze[i][j] == 4){
