@@ -30,6 +30,22 @@ public class Model {
         this.numberOfMonsters = numberOfMonsters;
     }
 
+    public List<Integer> getModelMonsterRows(){
+        List<Integer> monsterRows = new ArrayList<>();
+        for(int i = 0; i < getNumberOfMonsters(); i++){
+            monsterRows.add(getModelMonsters()[i].getRow());
+        }
+        return monsterRows;
+    }
+
+    public List<Integer> getModelMonsterCols(){
+        List<Integer> monsterCols = new ArrayList<>();
+        for(int i = 0; i < getNumberOfMonsters(); i++){
+            monsterCols.add(getModelMonsters()[i].getCol());
+        }
+        return monsterCols;
+    }
+
     public Maze getCurrentMaze() {
         return currentMaze;
     }
@@ -53,23 +69,6 @@ public class Model {
     public void setModelMonsters(Monster[] modelMonsters) {
         this.modelMonsters = modelMonsters;
     }
-
-    /**
-    public List<Integer> getModelMonstersRows(){
-        List<Integer> rows = new ArrayList<>();
-        for (int i = 0; i < getModelMonsters().length; i++){
-            rows.add(getModelMonsters()[i].getRow());
-        }
-         return rows;
-    }
-
-    public List<Integer> getModelMonstersCols(){
-        List<Integer> cols = new ArrayList<>();
-        for (int i = 0; i < getModelMonsters().length; i++){
-            cols.add(getModelMonsters()[i].getCol());
-        }
-        return cols;
-    }*/
 
     public Power getModelPower() {
         return modelPower;
@@ -102,16 +101,22 @@ public class Model {
         getModelHero().setCol(1);
         getModelHero().setAlive(true);
 
-        //Place monsters in corners
-        setModelMonsters(new Monster[]{
-                new Monster(), new Monster(), new Monster()
-        });
+        if(getNumberOfMonsters() == 1){
+            //Place monster in far corner
+            setModelMonsters(new Monster[]{ new Monster() });
+
+        }else if (getNumberOfMonsters() == 3){
+            //Place monsters in corners
+            setModelMonsters(new Monster[]{
+                    new Monster(), new Monster(), new Monster()
+            });
+        }
 
         //Set first monster
         getModelMonsters()[0].setRow(getCurrentMaze().getMazeRows() - 2);
         getModelMonsters()[0].setCol(getCurrentMaze().getMazeColumns() - 2);
         getModelMonsters()[0].setIsAlive(true);
-        System.out.println("NUM MONSTERRS" + getNumberOfMonsters());
+
         //Set next 2
         if (getNumberOfMonsters() == 3){
             getModelMonsters()[1].setRow(1);

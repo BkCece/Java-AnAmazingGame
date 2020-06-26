@@ -65,9 +65,15 @@ public class TextUI {
             System.out.println("Enter your move [WASD]: ");
             String choice = input.nextLine();
 
-            //make sure input isn't case sensitive
-            //trim to remove any extra spaces
-            charChoice = choice.trim().toUpperCase().charAt(0);
+            try{
+                //make sure input isn't case sensitive
+                //trim to remove any extra spaces
+                charChoice = choice.trim().toUpperCase().charAt(0);
+            }catch (Exception ex){
+                //Set to invalid char: not included in options
+                charChoice = 'I';
+            }
+
 
             //check if the choice is an acceptable input
         }while(!validateChoice(charChoice));
@@ -130,5 +136,23 @@ public class TextUI {
             return true;
 
         return false;
+    }
+
+    /**
+     * Output to user to notify of cheat mode
+     * New maze is generated with only 1 monster
+     * Tell them to view map with 'm'
+     *
+     */
+    public void enterCheatMode(){
+        System.out.println("*******************************************************");
+        System.out.println("YOU HAVE ENTERED CHEAT MODE!");
+        System.out.println("You now only need to defeat 1 monster to win the game.");
+        System.out.println("Want to view the map?");
+        System.out.println("        Enter 'm' (you can do this in normal mode too!)");
+        System.out.println("Need help?");
+        System.out.println("        Enter '?' to view instructions again.");
+        System.out.println("*******************************************************");
+        System.out.println();
     }
 }

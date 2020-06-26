@@ -13,56 +13,25 @@ import java.util.List;
  * Handles player choices relative to maze model and UI
  */
 public class Main {
+    public static Model mainModel;
+    public static MazeUI mainMazeUI;
+    public static TextUI mainTextUI;
+    public static int[][] mainMaze;
 
     public static void main(String[] args){
         //boolean cheatMode = false;
-        Model mainModel = new Model();
-        MazeUI mainMazeUI = new MazeUI();
-        TextUI mainTextUI = new TextUI();
-        int[][] mainMaze;
+        mainModel = new Model();
+        mainMazeUI = new MazeUI();
+        mainTextUI = new TextUI();
 
-        //trigger maze generation and get the maze array
-        mainModel.createMazeModel();
-        mainMaze = mainModel.getMainMaze();
-
-        //Place the characters and items
         mainModel.setNumberOfMonsters(3);
-        mainModel.initializeCharacters();
-
-        //Display game text
-        mainTextUI.printInstructions(
-                mainMazeUI.getHeroIcon(),
-                mainMazeUI.getMonsterIcon(),
-                mainMazeUI.getPowerIcon(),
-                mainMazeUI.getWallIcon(),
-                mainMazeUI.getUnexploredIcon()
-        );
+        initializeMaze(mainModel.getNumberOfMonsters());
 
         //make sure only walls, characters, and powers are shown
         //make sure surrounding 8 cells are displayed fully around the hero
         //use MazeUI
-        //FIX THIS LATER SO IT'S BETTER ENCAPSULATED INTO MONSTER
-        List<Integer> monsterRows = new ArrayList<>();
-        List<Integer> monsterCols = new ArrayList<>();
-        for(int i = 0; i < mainModel.getNumberOfMonsters(); i++){
-            monsterRows.add(mainModel.getModelMonsters()[i].getRow());
-            monsterCols.add(mainModel.getModelMonsters()[i].getCol());
-        }
-
         do {
-            mainMazeUI.placeCharacters(
-                    mainMaze,
-                    mainModel.getModelHero().getRow(),
-                    mainModel.getModelHero().getCol(),
-                    monsterRows,
-                    monsterCols,
-                    mainModel.getModelPower().getRow(),
-                    mainModel.getModelPower().getCol()
-            );
-
-            //Display maze
-            mainModel.setMazeVisibility();
-            mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
+            renderMazeUpdates();
 
             int directionChoice;
             do {
@@ -79,7 +48,6 @@ public class Main {
                             mainMazeUI.getWallIcon(),
                             mainMazeUI.getUnexploredIcon()
                     );
-                    break;
 
                 }else if (directionChoice == 5){
                     //Display full maze
@@ -89,8 +57,12 @@ public class Main {
 
                 }else if(directionChoice == 6){
                     //Cheat Mode
-                    //IDK YET ?????????
                     mainModel.setNumberOfMonsters(1);
+                    initializeMaze(mainModel.getNumberOfMonsters());
+
+                    mainTextUI.enterCheatMode();
+                    renderMazeUpdates();
+
                 }
 
                 //loop while direction is unverified
@@ -117,6 +89,41 @@ public class Main {
 
 
         }while (true);
+    }
+
+    public static void initializeMaze(int numMonsters){
+        //trigger maze generation and get the maze array
+        mainModel.createMazeModel();
+        mainMaze = mainModel.getMainMaze();
+
+        //Place the characters and items
+        mainModel.setNumberOfMonsters(numMonsters);
+        mainModel.initializeCharacters();
+
+        //Display game text
+        mainTextUI.printInstructions(
+                mainMazeUI.getHeroIcon(),
+                mainMazeUI.getMonsterIcon(),
+                mainMazeUI.getPowerIcon(),
+                mainMazeUI.getWallIcon(),
+                mainMazeUI.getUnexploredIcon()
+        );
+    }
+
+    public static void renderMazeUpdates(){
+        mainMazeUI.placeCharacters(
+                mainMaze,
+                mainModel.getModelHero().getRow(),
+                mainModel.getModelHero().getCol(),
+                mainModel.getModelMonsterRows(),
+                mainModel.getModelMonsterCols(),
+                mainModel.getModelPower().getRow(),
+                mainModel.getModelPower().getCol()
+        );
+
+        //Display maze
+        mainModel.setMazeVisibility();
+        mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
     }
 
 }
