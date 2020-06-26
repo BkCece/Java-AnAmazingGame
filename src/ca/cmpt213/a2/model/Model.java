@@ -32,12 +32,13 @@ public class Model {
         //update Maze cells
 
     public static void main(String[] args){
+        //Create a new maze
         Maze currentMaze;
-        int count = 0;
         do{
             currentMaze = new Maze(MAZE_ROWS, MAZE_COLUMNS);
-            System.out.println(count++);
-        }while(currentMaze.verifyMaze() == false);
+
+            //check for paths in corners, no zeroes, and at least 2 cycles
+        }while(currentMaze.verifyMaze() == false || currentMaze.addCycles() < 3);
 
         currentMaze.displayMaze();
 

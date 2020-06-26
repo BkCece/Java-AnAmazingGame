@@ -15,7 +15,11 @@ public class TextUI {
         //make sure input isn't case sensitive
         //trim input
 
-    public static void main(String[] args){
+    public void printInstructions(){
         System.out.println("MAZE BOI");
+    }
+
+    public void getUserInput(){
+        
     }
 }

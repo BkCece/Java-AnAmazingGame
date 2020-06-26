@@ -132,8 +132,35 @@ public class Maze {
         return true;
     }
 
-    public void addCycles(){
-        
+    //Add cycles to the maze
+    //Returns number of cycles added
+    public int addCycles(){
+        int count = 0;
+        for (int i = 1; i < row - 1; i++){
+            for (int j = 1; j < col - 1; j++){
+                if(maze[i][j] == 1){
+                    //top and bottom are walls
+                    if(maze[i + 1][j] == 1 && maze[i - 1][j] == 1){
+                        //sides are paths
+                        if(maze[i][j + 1] == 2 && maze[i][j - 1] == 2){
+                            //make a cycle
+                            maze[i][j] = 2;
+                            count++;
+                        }
+                    //top and bottom are paths
+                    }else if(maze[i + 1][j] == 2 && maze[i - 1][j] == 2){
+                        //sides are walls
+                        if(maze[i][j + 1] == 1 && maze[i][j - 1] == 1){
+                            //make a cycle
+                            maze[i][j] = 2;
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return count;
     }
 
     public void displayMaze(){
