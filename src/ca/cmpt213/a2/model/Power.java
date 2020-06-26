@@ -9,15 +9,16 @@ import java.util.Random;
  */
 public class Power{
     //If the player has picked up the power
-    private boolean isObtained;
+    //private boolean isObtained;
 
     //If the player has used the power
-    private boolean isDepleted;
+    //private boolean isDepleted;
 
     ///Power-up Location
     private int row;
     private int col;
 
+    /**
     public boolean getIsObtained() {
 
         return isObtained;
@@ -37,6 +38,7 @@ public class Power{
 
         this.isDepleted = isDepleted;
     }
+     */
 
     public int getRow() {
         return row;

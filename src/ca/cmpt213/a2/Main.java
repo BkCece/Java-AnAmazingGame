@@ -62,8 +62,6 @@ public class Main {
                     mainModel.setTotalNumberOfMonsters(1);
                     initializeMaze(mainModel.getTotalNumberOfMonsters());
 
-                    mainModel.setCurrNumberOfMonsters(1);
-
                     mainTextUI.enterCheatMode();
                     renderMazeUpdates();
 
@@ -110,6 +108,8 @@ public class Main {
         mainModel.initializeCharacters();
 
         mainModel.setCurrNumberOfMonsters(numMonsters);
+        mainModel.setTotalNumberOfPowers(numMonsters);
+        mainModel.setCurrNumberOfPowers(0);
 
         //Display game text
         mainTextUI.printInstructions(
@@ -128,7 +128,21 @@ public class Main {
      *
      */
     public static void renderMazeUpdates(){
-        if(!mainModel.getModelPower().getIsObtained()){
+        System.out.println("curr: " + mainModel.getCurrNumberOfPowers());
+        System.out.println("tot: " + mainModel.getTotalNumberOfPowers());
+        if(mainModel.getCurrNumberOfPowers() == mainModel.getTotalNumberOfPowers()){
+            //if all powers have been obtained
+            //Don't display power
+            mainMazeUI.placeCharacters(
+                    mainMaze,
+                    mainModel.getModelHero().getRow(),
+                    mainModel.getModelHero().getCol(),
+                    mainModel.getModelMonsterRows(),
+                    mainModel.getModelMonsterCols(),
+                    -1,
+                    -1
+            );
+        }else{
             //Display power to map
             mainMazeUI.placeCharacters(
                     mainMaze,
@@ -140,21 +154,12 @@ public class Main {
                     mainModel.getModelPower().getCol()
             );
 
-        }else{
-            //Don't display power
-            mainMazeUI.placeCharacters(
-                    mainMaze,
-                    mainModel.getModelHero().getRow(),
-                    mainModel.getModelHero().getCol(),
-                    mainModel.getModelMonsterRows(),
-                    mainModel.getModelMonsterCols(),
-                    -1,
-                    -1
-            );
+            //only check for power if the hero doesn't have them all yet
+            if (mainModel.checkForPowerPickup())
+                mainTextUI.powerObtained();
         }
 
-        if (mainModel.checkForPowerPickup())
-            mainTextUI.powerObtained();
+
 
         //Display maze
         mainModel.setMazeVisibility();

@@ -90,7 +90,7 @@ public class MazeUI {
     public void placeCharacters(int[][]maze, int heroRow, int heroCol, List<Integer> monsterRows, List<Integer> monsterCols, int powerRow, int powerCol){
         if (powerRow != -1 || powerCol != -1){
             //place power ups first
-            //only place if not yet obtained
+            //only place if not yet obtained and not all powers have been obtained
             maze[powerRow][powerCol] = 5;
         }
 

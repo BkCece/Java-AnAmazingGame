@@ -10,8 +10,13 @@ import java.util.Random;
  * Contains majority of maze logic
  */
 public class Model {
+    //Can have multiple monsters
     private int currNumberOfMonsters;
     private int totalNumberOfMonsters;
+
+    //Can have multiple powers
+    private int currNumberOfPowers;
+    private int totalNumberOfPowers;
 
     //OBJECTS of classes
     private Maze currentMaze;
@@ -53,6 +58,22 @@ public class Model {
             monsterCols.add(getModelMonsters()[i].getCol());
         }
         return monsterCols;
+    }
+
+    public int getCurrNumberOfPowers() {
+        return currNumberOfPowers;
+    }
+
+    public void setCurrNumberOfPowers(int currNumberOfPowers) {
+        this.currNumberOfPowers = currNumberOfPowers;
+    }
+
+    public int getTotalNumberOfPowers() {
+        return totalNumberOfPowers;
+    }
+
+    public void setTotalNumberOfPowers(int totalNumberOfPowers) {
+        this.totalNumberOfPowers = totalNumberOfPowers;
     }
 
     public Maze getCurrentMaze() {
@@ -258,21 +279,14 @@ public class Model {
      *
      */
     public boolean checkForPowerPickup(){
-        if(getModelPower().getIsDepleted()){
-            //Power is depleted
+        //If the power has not been picked up yet
+        if ((getModelHero().getRow() == getModelPower().getRow()) && (getModelHero().getCol() == getModelPower().getCol())){
+            //if the player has reached the power
+            //increment number of powers
+            setCurrNumberOfPowers(getCurrNumberOfPowers() + 1);
+            //set location for new power in maze
             getModelPower().setRandomLocation(getMainMaze(), getCurrentMaze().getMazeRows(), getCurrentMaze().getMazeColumns());
-            getModelPower().setIsDepleted(false);
-            getModelPower().setIsObtained(false);
-        }else{
-            if (!getModelPower().getIsObtained()){
-                //If the power has not been picked up yet
-                if ((getModelHero().getRow() == getModelPower().getRow()) && (getModelHero().getCol() == getModelPower().getCol())){
-                    //if the player has reached the power
-                    getModelPower().setIsObtained(true);
-                    getModelPower().setIsDepleted(false);
-                    return true;
-                }
-            }
+            return true;
         }
 
         return false;

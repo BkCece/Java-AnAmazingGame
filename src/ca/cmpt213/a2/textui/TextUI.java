@@ -178,7 +178,8 @@ public class TextUI {
         System.out.println("********************************************");
         System.out.println("You have obtained a POWER!!!");
         System.out.println("Use it to defeat a monster.");
-        System.out.println("Another power will appear once you do so!");
+        System.out.println("Another power will appear shortly!");
+        System.out.println("            (if you don't have them all yet)");
         System.out.println("********************************************");
     }
 }

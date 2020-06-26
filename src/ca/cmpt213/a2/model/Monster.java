@@ -12,6 +12,7 @@ public class Monster implements Character{
     private int col;
     private boolean isAlive;
 
+
     public int getRow() {
         return row;
     }
