@@ -10,7 +10,8 @@ import java.util.Random;
  * Contains majority of maze logic
  */
 public class Model {
-    private int numberOfMonsters;
+    private int currNumberOfMonsters;
+    private int totalNumberOfMonsters;
 
     //OBJECTS of classes
     private Maze currentMaze;
@@ -22,17 +23,25 @@ public class Model {
     //Make mapping the same size as the main maze
     private boolean[][] mazeMapping;
 
-    public int getNumberOfMonsters() {
-        return numberOfMonsters;
+    public int getCurrNumberOfMonsters() {
+        return currNumberOfMonsters;
     }
 
-    public void setNumberOfMonsters(int numberOfMonsters) {
-        this.numberOfMonsters = numberOfMonsters;
+    public void setCurrNumberOfMonsters(int currNumberOfMonsters) {
+        this.currNumberOfMonsters = currNumberOfMonsters;
+    }
+
+    public int getTotalNumberOfMonsters() {
+        return totalNumberOfMonsters;
+    }
+
+    public void setTotalNumberOfMonsters(int totalNumberOfMonsters) {
+        this.totalNumberOfMonsters = totalNumberOfMonsters;
     }
 
     public List<Integer> getModelMonsterRows(){
         List<Integer> monsterRows = new ArrayList<>();
-        for(int i = 0; i < getNumberOfMonsters(); i++){
+        for(int i = 0; i < getCurrNumberOfMonsters(); i++){
             monsterRows.add(getModelMonsters()[i].getRow());
         }
         return monsterRows;
@@ -40,7 +49,7 @@ public class Model {
 
     public List<Integer> getModelMonsterCols(){
         List<Integer> monsterCols = new ArrayList<>();
-        for(int i = 0; i < getNumberOfMonsters(); i++){
+        for(int i = 0; i < getCurrNumberOfMonsters(); i++){
             monsterCols.add(getModelMonsters()[i].getCol());
         }
         return monsterCols;
@@ -101,11 +110,11 @@ public class Model {
         getModelHero().setCol(1);
         getModelHero().setAlive(true);
 
-        if(getNumberOfMonsters() == 1){
+        if(getTotalNumberOfMonsters() == 1){
             //Place monster in far corner
             setModelMonsters(new Monster[]{ new Monster() });
 
-        }else if (getNumberOfMonsters() == 3){
+        }else if (getTotalNumberOfMonsters() == 3){
             //Place monsters in corners
             setModelMonsters(new Monster[]{
                     new Monster(), new Monster(), new Monster()
@@ -118,7 +127,7 @@ public class Model {
         getModelMonsters()[0].setIsAlive(true);
 
         //Set next 2
-        if (getNumberOfMonsters() == 3){
+        if (getTotalNumberOfMonsters() == 3){
             getModelMonsters()[1].setRow(1);
             getModelMonsters()[1].setCol(getCurrentMaze().getMazeColumns() - 2);
             getModelMonsters()[1].setIsAlive(true);
@@ -237,5 +246,35 @@ public class Model {
                 getMazeMapping()[i][j] = true;
             }
         }
+    }
+
+    /**
+     * Compares hero and power locations to pick up the power
+     * Returns true if power is obtained, false if not
+     * If true, sets power values to obtained and not depleted
+     * Boolean is used to notfy the player of the pick-up
+     * Only checks for pickup if not yet obtained
+     * If the power has been depleted, place in a new location & reset it
+     *
+     */
+    public boolean checkForPowerPickup(){
+        if(getModelPower().getIsDepleted()){
+            //Power is depleted
+            getModelPower().setRandomLocation(getMainMaze(), getCurrentMaze().getMazeRows(), getCurrentMaze().getMazeColumns());
+            getModelPower().setIsDepleted(false);
+            getModelPower().setIsObtained(false);
+        }else{
+            if (!getModelPower().getIsObtained()){
+                //If the power has not been picked up yet
+                if ((getModelHero().getRow() == getModelPower().getRow()) && (getModelHero().getCol() == getModelPower().getCol())){
+                    //if the player has reached the power
+                    getModelPower().setIsObtained(true);
+                    getModelPower().setIsDepleted(false);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

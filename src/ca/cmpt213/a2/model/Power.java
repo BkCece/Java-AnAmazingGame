@@ -9,28 +9,32 @@ import java.util.Random;
  */
 public class Power{
     //If the player has picked up the power
-    private int isObtained;
+    private boolean isObtained;
 
     //If the player has used the power
-    private int isDepleted;
+    private boolean isDepleted;
 
     ///Power-up Location
     private int row;
     private int col;
 
-    public int getIsObtained() {
+    public boolean getIsObtained() {
+
         return isObtained;
     }
 
-    public void setIsObtained(int isObtained) {
+    public void setIsObtained(boolean isObtained) {
+
         this.isObtained = isObtained;
     }
 
-    public int getIsDepleted() {
+    public boolean getIsDepleted() {
+
         return isDepleted;
     }
 
-    public void setIsDepleted(int isDepleted) {
+    public void setIsDepleted(boolean isDepleted) {
+
         this.isDepleted = isDepleted;
     }
 
@@ -39,6 +43,7 @@ public class Power{
     }
 
     public void setRow(int row) {
+
         this.row = row;
     }
 
@@ -47,6 +52,7 @@ public class Power{
     }
 
     public void setCol(int col) {
+
         this.col = col;
     }
 

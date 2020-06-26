@@ -88,8 +88,12 @@ public class MazeUI {
      * Display characters and items
      */
     public void placeCharacters(int[][]maze, int heroRow, int heroCol, List<Integer> monsterRows, List<Integer> monsterCols, int powerRow, int powerCol){
-        //place power ups first
-        maze[powerRow][powerCol] = 5;
+        if (powerRow != -1 || powerCol != -1){
+            //place power ups first
+            //only place if not yet obtained
+            maze[powerRow][powerCol] = 5;
+        }
+
 
         //can overwrite with monsters
         for(int i = 0; i < monsterRows.size(); i++){

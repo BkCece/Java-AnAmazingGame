@@ -55,13 +55,13 @@ public class TextUI {
      * Returns Up: 0, Left: 1, Down: 2, Right: 3
      * Returns -1 upon error
      */
-    public int getUserInput(){
+    public int getUserInput(int totalNumMonsters, int currNumMonsters){
         char charChoice;
         do{
             System.out.println();
-            System.out.println("Total number of monsters to be killed: ");
+            System.out.println("Total number of monsters to be killed: " + totalNumMonsters);
             System.out.println("Number of powers currently in possession: ");
-            System.out.println("Number of monsters alive: ");
+            System.out.println("Number of monsters alive: " + currNumMonsters);
             System.out.println("Enter your move [WASD]: ");
             String choice = input.nextLine();
 
@@ -154,5 +154,31 @@ public class TextUI {
         System.out.println("        Enter '?' to view instructions again.");
         System.out.println("*******************************************************");
         System.out.println();
+    }
+
+    /**
+     * Output for end of game
+     * Display congratulations for the user & thank for playing
+     *
+     */
+    public void endGame(){
+        System.out.println("<3   <3   <3   <3   <3   <3   <3   <3   <3");
+        System.out.println("CONGRATULATIONS! YOU WON!");
+        System.out.println("Thanks for playing. PLay again soon!");
+        System.out.println("<3   <3   <3   <3   <3   <3   <3   <3   <3");
+        System.out.println();
+    }
+
+    /**
+     * Notify the player that they obtained a power
+     * They will not see another until they have killed a monster
+     *
+     */
+    public void powerObtained(){
+        System.out.println("********************************************");
+        System.out.println("You have obtained a POWER!!!");
+        System.out.println("Use it to defeat a monster.");
+        System.out.println("Another power will appear once you do so!");
+        System.out.println("********************************************");
     }
 }

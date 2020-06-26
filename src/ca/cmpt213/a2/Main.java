@@ -24,8 +24,10 @@ public class Main {
         mainMazeUI = new MazeUI();
         mainTextUI = new TextUI();
 
-        mainModel.setNumberOfMonsters(3);
-        initializeMaze(mainModel.getNumberOfMonsters());
+        mainModel.setTotalNumberOfMonsters(3);
+        initializeMaze(mainModel.getTotalNumberOfMonsters());
+
+        mainModel.setCurrNumberOfMonsters(3);
 
         //make sure only walls, characters, and powers are shown
         //make sure surrounding 8 cells are displayed fully around the hero
@@ -36,7 +38,7 @@ public class Main {
             int directionChoice;
             do {
                 //Request and get user input with TestUI
-                directionChoice = mainTextUI.getUserInput();
+                directionChoice = mainTextUI.getUserInput(mainModel.getTotalNumberOfMonsters(), mainModel.getCurrNumberOfMonsters());
 
                 //stop requesting input if user chose a non-direction option
                 if(directionChoice == 4){
@@ -57,8 +59,10 @@ public class Main {
 
                 }else if(directionChoice == 6){
                     //Cheat Mode
-                    mainModel.setNumberOfMonsters(1);
-                    initializeMaze(mainModel.getNumberOfMonsters());
+                    mainModel.setTotalNumberOfMonsters(1);
+                    initializeMaze(mainModel.getTotalNumberOfMonsters());
+
+                    mainModel.setCurrNumberOfMonsters(1);
 
                     mainTextUI.enterCheatMode();
                     renderMazeUpdates();
@@ -88,17 +92,24 @@ public class Main {
 
 
 
-        }while (true);
+        }while (mainModel.getCurrNumberOfMonsters() != 0);
+
+        mainTextUI.endGame();
     }
 
+    /**
+     * Sets initial state for maze, based on the required number of monsters
+     */
     public static void initializeMaze(int numMonsters){
         //trigger maze generation and get the maze array
         mainModel.createMazeModel();
         mainMaze = mainModel.getMainMaze();
 
         //Place the characters and items
-        mainModel.setNumberOfMonsters(numMonsters);
+        mainModel.setTotalNumberOfMonsters(numMonsters);
         mainModel.initializeCharacters();
+
+        mainModel.setCurrNumberOfMonsters(numMonsters);
 
         //Display game text
         mainTextUI.printInstructions(
@@ -110,16 +121,40 @@ public class Main {
         );
     }
 
+    /**
+     * Renders the maze fully with all characters and powers
+     * Maze starts hidden, except for adjacent cells
+     * Player can see hero, monster(s), and one power at a time
+     *
+     */
     public static void renderMazeUpdates(){
-        mainMazeUI.placeCharacters(
-                mainMaze,
-                mainModel.getModelHero().getRow(),
-                mainModel.getModelHero().getCol(),
-                mainModel.getModelMonsterRows(),
-                mainModel.getModelMonsterCols(),
-                mainModel.getModelPower().getRow(),
-                mainModel.getModelPower().getCol()
-        );
+        if(!mainModel.getModelPower().getIsObtained()){
+            //Display power to map
+            mainMazeUI.placeCharacters(
+                    mainMaze,
+                    mainModel.getModelHero().getRow(),
+                    mainModel.getModelHero().getCol(),
+                    mainModel.getModelMonsterRows(),
+                    mainModel.getModelMonsterCols(),
+                    mainModel.getModelPower().getRow(),
+                    mainModel.getModelPower().getCol()
+            );
+
+        }else{
+            //Don't display power
+            mainMazeUI.placeCharacters(
+                    mainMaze,
+                    mainModel.getModelHero().getRow(),
+                    mainModel.getModelHero().getCol(),
+                    mainModel.getModelMonsterRows(),
+                    mainModel.getModelMonsterCols(),
+                    -1,
+                    -1
+            );
+        }
+
+        if (mainModel.checkForPowerPickup())
+            mainTextUI.powerObtained();
 
         //Display maze
         mainModel.setMazeVisibility();
