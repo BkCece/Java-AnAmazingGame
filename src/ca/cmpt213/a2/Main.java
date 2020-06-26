@@ -19,12 +19,14 @@ public class Main {
         Model mainModel = new Model();
         MazeUI mainMazeUI = new MazeUI();
         TextUI mainTextUI = new TextUI();
+        int[][] mainMaze;
 
         //trigger maze generation and get the maze array
         mainModel.createMazeModel();
-        int[][] mainMaze = mainModel.getMainMaze();
+        mainMaze = mainModel.getMainMaze();
 
         //Place the characters and items
+        mainModel.setNumberOfMonsters(3);
         mainModel.initializeCharacters();
 
         //Display game text
@@ -67,6 +69,31 @@ public class Main {
                 //Request and get user input with TestUI
                 directionChoice = mainTextUI.getUserInput();
 
+                //stop requesting input if user chose a non-direction option
+                if(directionChoice == 4){
+                    //Display game text
+                    mainTextUI.printInstructions(
+                            mainMazeUI.getHeroIcon(),
+                            mainMazeUI.getMonsterIcon(),
+                            mainMazeUI.getPowerIcon(),
+                            mainMazeUI.getWallIcon(),
+                            mainMazeUI.getUnexploredIcon()
+                    );
+                    break;
+
+                }else if (directionChoice == 5){
+                    //Display full maze
+                    //Set maze mapping to fully visible
+                    mainModel.fullMazeVisibility();
+                    mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
+
+                }else if(directionChoice == 6){
+                    //Cheat Mode
+                    //IDK YET ?????????
+                    mainModel.setNumberOfMonsters(1);
+                }
+
+                //loop while direction is unverified
             } while (!mainModel.getModelHero().verifyMovement(
                     directionChoice,
                     mainMaze,
@@ -74,16 +101,21 @@ public class Main {
                     mainModel.getModelHero().getCol()
             ));
 
+            //Only run if player chose to move hero
+            if(directionChoice >= 0 && directionChoice < 4){
+                //move player based on direction choice
+                mainModel.getModelHero().move(
+                        mainModel.getModelHero().getRow(),
+                        mainModel.getModelHero().getCol(),
+                        directionChoice,
+                        mainMaze
+                );
 
-            //move player based on direction choice
-            mainModel.getModelHero().move(
-                    mainModel.getModelHero().getRow(),
-                    mainModel.getModelHero().getCol(),
-                    directionChoice,
-                    mainMaze
-            );
+                //this triggers all subsequent movements/actions using Model
+            }
 
-            //this triggers all subsequent movements/actions using Model
+
+
         }while (true);
     }
 

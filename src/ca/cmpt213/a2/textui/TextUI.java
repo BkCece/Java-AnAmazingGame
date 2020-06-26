@@ -16,7 +16,9 @@ public class TextUI {
     private static final char LEFT_KEY = 'A';
     private static final char DOWN_KEY = 'S';
     private static final char RIGHT_KEY = 'D';
-
+    private static final char HELP_KEY = '?';
+    private static final char MAZE_KEY = 'M';
+    private static final char CHEAT_KEY = 'C';
 
     /**
      * Method to display maze game instructions
@@ -70,19 +72,33 @@ public class TextUI {
             //check if the choice is an acceptable input
         }while(!validateChoice(charChoice));
 
-        if(charChoice == UP_KEY)
-            return 0;
+        switch (charChoice){
+            //Return direction
+            case UP_KEY:
+                return 0;
 
-        if(charChoice == LEFT_KEY)
-            return 1;
+            case LEFT_KEY:
+                return 1;
 
-        if(charChoice == DOWN_KEY)
-            return 2;
+            case DOWN_KEY:
+                return 2;
 
-        if(charChoice == RIGHT_KEY)
-            return 3;
+            case RIGHT_KEY:
+                return 3;
 
-        return -1;
+            //Other commands
+            case HELP_KEY:
+                return 4;
+
+            case MAZE_KEY:
+                return 5;
+
+            case CHEAT_KEY:
+                return 6;
+
+            default:
+                return -1;
+        }
     }
 
     /**
@@ -90,6 +106,7 @@ public class TextUI {
      * Returns true if valid input, false if not
      */
     public boolean validateChoice(char charChoice){
+        //Movement choices
         if(charChoice == UP_KEY)
             return true;
 
@@ -100,6 +117,16 @@ public class TextUI {
             return true;
 
         if(charChoice == RIGHT_KEY)
+            return true;
+
+        //Other commands
+        if(charChoice == HELP_KEY)
+            return true;
+
+        if(charChoice == MAZE_KEY)
+            return true;
+
+        if(charChoice == CHEAT_KEY)
             return true;
 
         return false;

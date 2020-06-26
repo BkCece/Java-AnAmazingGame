@@ -1,5 +1,7 @@
 package ca.cmpt213.a2.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Random;
  * Contains majority of maze logic
  */
 public class Model {
-    private static final int NUMBER_OF_MONSTERS = 3;
+    private int numberOfMonsters;
 
     //OBJECTS of classes
     private Maze currentMaze;
@@ -21,7 +23,11 @@ public class Model {
     private boolean[][] mazeMapping;
 
     public int getNumberOfMonsters() {
-        return NUMBER_OF_MONSTERS;
+        return numberOfMonsters;
+    }
+
+    public void setNumberOfMonsters(int numberOfMonsters) {
+        this.numberOfMonsters = numberOfMonsters;
     }
 
     public Maze getCurrentMaze() {
@@ -47,6 +53,23 @@ public class Model {
     public void setModelMonsters(Monster[] modelMonsters) {
         this.modelMonsters = modelMonsters;
     }
+
+    /**
+    public List<Integer> getModelMonstersRows(){
+        List<Integer> rows = new ArrayList<>();
+        for (int i = 0; i < getModelMonsters().length; i++){
+            rows.add(getModelMonsters()[i].getRow());
+        }
+         return rows;
+    }
+
+    public List<Integer> getModelMonstersCols(){
+        List<Integer> cols = new ArrayList<>();
+        for (int i = 0; i < getModelMonsters().length; i++){
+            cols.add(getModelMonsters()[i].getCol());
+        }
+        return cols;
+    }*/
 
     public Power getModelPower() {
         return modelPower;
@@ -88,7 +111,7 @@ public class Model {
         getModelMonsters()[0].setRow(getCurrentMaze().getMazeRows() - 2);
         getModelMonsters()[0].setCol(getCurrentMaze().getMazeColumns() - 2);
         getModelMonsters()[0].setIsAlive(true);
-
+        System.out.println("NUM MONSTERRS" + getNumberOfMonsters());
         //Set next 2
         if (getNumberOfMonsters() == 3){
             getModelMonsters()[1].setRow(1);
@@ -136,12 +159,7 @@ public class Model {
             //check for paths in corners, no zeroes, and at least 2 cycles
         }while(getCurrentMaze().verifyMaze() == false || getCurrentMaze().addCycles() < 3);
 
-        //currentMaze.displayMaze();
-
         //determine cell contents
-        //walls or empty
-        //hero corner
-        //monsters and powers
         initializeMazeVisibility();
         return getCurrentMaze();
     }
@@ -202,4 +220,17 @@ public class Model {
         }
     }
 
+    /**
+     * Make the entire maze visible
+     */
+    public void fullMazeVisibility() {
+        setMazeMapping(new boolean[getCurrentMaze().getMazeRows()][getCurrentMaze().getMazeColumns()]);
+
+        for (int i = 0; i < getCurrentMaze().getMazeRows(); i++){
+            for (int j = 0; j < getCurrentMaze().getMazeColumns(); j++){
+                //make every cell visible
+                getMazeMapping()[i][j] = true;
+            }
+        }
+    }
 }
