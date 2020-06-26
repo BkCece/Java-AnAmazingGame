@@ -1,5 +1,9 @@
 package ca.cmpt213.a2.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Class to manage the monster
  * Can move only WASD: 4 directions
@@ -47,21 +51,109 @@ public class Monster implements Character{
     //isAlive attribute
     //get and set for xPosition & yPosition
 
-    //function to check if valid movement
-    //takes choice and compares it to maze options
+    /**
+     *
+     * Randomly chooses a valid path for the monster to take
+     * Monster only moves over one cell left, right, up, or down
+     *
+     */
     public boolean verifyMovement(int direction, int[][] maze, int monstRow, int monstCol){
 
-        return false;
+        //Check given direction for validity
+        switch (direction){
+            case 0:
+                //UP is a wall
+                if(maze[monstRow - 1][monstCol] == 1)
+                    return false;
+                else
+                    return true;
+
+            case 1:
+                //LEFT is a wall
+                if(maze[monstRow][monstCol - 1] == 1)
+                    return false;
+                else
+                    return true;
+
+            case 2:
+                //DOWN is a wall
+                if(maze[monstRow + 1][monstCol] == 1)
+                    return false;
+                else
+                    return true;
+
+            case 3:
+                //RIGHT is a wall
+                if(maze[monstRow][monstCol + 1] == 1)
+                    return false;
+                else
+                    return true;
+
+            default:
+                return false;
+        }
     }
 
+    /**
+     *
+     * Moves single monster from current position
+     * Moves to a random valid direction
+     *
+     */
     //moves character from start to end position, as given
     public void move(int startRow, int startCol, int direction, int[][] maze){
+        //Check each direction and store valid choices in verified move list
+        List<Integer> validMoves = new ArrayList<>();
+
+        do {
+            //Check each of the four directions
+            //UP: 0, LEFT: 1, DOWN: 2, RIGHT: 3
+            for (int i = 0; i < 4; i++) {
+                if (verifyMovement(i, maze, startRow, startCol)) {
+                    //Given direction is not a wall
+                    //Add to valid moves list
+                    validMoves.add(i);
+                }
+            }
+
+            //Randomly pick a move from list
+            Random r = new Random();
+            int max = validMoves.size() - 1;
+            //((max - min) + 1) + min
+            int randChoice = r.nextInt((max - 0) + 1) + 0;
+
+            //Move to chosen adjacent cell
+            direction = validMoves.get(randChoice);
+
+            //move to next spot
+            if (direction == 0) {
+                //move up
+                setRow(startRow - 1);
+
+            } else if (direction == 1) {
+                //move left
+                setCol(startCol - 1);
+
+            } else if (direction == 2) {
+                //move down
+                setRow(startRow + 1);
+
+            } else if (direction == 3) {
+                //move right
+                setCol(startCol + 1);
+            }
+
+            //Set previous location to a path
+            maze[startRow][startCol] = 2;
+
+            //loop until a valid direction can be chosen and moved to
+        }while (direction == -1);
 
     }
 
     //changes character's status (alive or dead)
     //also decides to change status or not
-    public void changeStatus(boolean isAlive){
+    public void checkStatus(boolean isAlive){
 
     }
 

@@ -36,8 +36,12 @@ public class Hero implements Character {
         isAlive = alive;
     }
 
-    //function to check if valid movement
-    //takes choice and compares it to maze options
+    /**
+     * Check if movement choice is a valid option
+     * Compares choice it to maze path options
+     * Returns true if valid more, false if not
+     *
+     */
     public boolean verifyMovement(int direction, int[][] maze, int heroRow, int heroCol){
         if (direction == 0){
             //Move up
@@ -71,7 +75,12 @@ public class Hero implements Character {
         return false;
     }
 
-    //moves character from start to end position, as given
+    /**
+     *
+     * Moves character from start to chosen direction, as given
+     * Move direction has been previously verified as a correct choice
+     *
+     */
     public void move(int startRow, int startCol, int direction, int[][] maze){
         //set prev location to 2
         maze[startRow][startCol] = 2;
@@ -98,7 +107,7 @@ public class Hero implements Character {
 
     //changes character's status (alive or dead)
     //also decides to change status or not
-    public void changeStatus(boolean isAlive){
+    public void checkStatus(boolean isAlive){
 
     }
 

@@ -94,10 +94,12 @@ public class MazeUI {
             maze[powerRow][powerCol] = 5;
         }
 
-
         //can overwrite with monsters
         for(int i = 0; i < monsterRows.size(); i++){
-            maze[monsterRows.get(i)][monsterCols.get(i)] = 4;
+            //if row and col aren't negative
+            //make sure not to print if monster is dead
+            if(monsterRows.get(i) != -1 && monsterCols.get(i) != -1)
+                maze[monsterRows.get(i)][monsterCols.get(i)] = 4;
         }
 
         //heroes take precedence over all else

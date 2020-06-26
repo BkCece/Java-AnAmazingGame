@@ -20,6 +20,6 @@ public interface Character {
     void move(int r, int c, int d, int[][] m);
 
     //changes character's status
-    void changeStatus(boolean b);
+    void checkStatus(boolean b);
 
 }

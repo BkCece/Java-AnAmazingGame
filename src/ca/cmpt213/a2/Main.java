@@ -85,10 +85,20 @@ public class Main {
                         mainMaze
                 );
 
-                //this triggers all subsequent movements/actions using Model
+                //this triggers all subsequent movements/actions
+                //Move each monster
+               for(int i = 0; i < mainModel.getCurrNumberOfMonsters(); i++){
+                   if(mainModel.getModelMonsters()[i].getIsAlive()){
+                       //if the monster is alive, move them
+                       mainModel.getModelMonsters()[i].move(
+                               mainModel.getModelMonsters()[i].getRow(),
+                               mainModel.getModelMonsters()[i].getCol(),
+                               -1,
+                               mainMaze
+                       );
+                   }
+               }
             }
-
-
 
         }while (mainModel.getCurrNumberOfMonsters() != 0);
 
@@ -128,8 +138,17 @@ public class Main {
      *
      */
     public static void renderMazeUpdates(){
-        System.out.println("curr: " + mainModel.getCurrNumberOfPowers());
-        System.out.println("tot: " + mainModel.getTotalNumberOfPowers());
+        //If monster is dead, set row and col to -1 and don't display
+        for (int i = 0; i < mainModel.getTotalNumberOfMonsters(); i++){
+            //Check if monster is dead
+            if(!mainModel.getModelMonsters()[i].getIsAlive()){
+                mainModel.getModelMonsters()[i].setRow(-1);
+                mainModel.getModelMonsters()[i].setCol(-1);
+            }
+
+        }
+
+
         if(mainModel.getCurrNumberOfPowers() == mainModel.getTotalNumberOfPowers()){
             //if all powers have been obtained
             //Don't display power
@@ -158,8 +177,6 @@ public class Main {
             if (mainModel.checkForPowerPickup())
                 mainTextUI.powerObtained();
         }
-
-
 
         //Display maze
         mainModel.setMazeVisibility();
