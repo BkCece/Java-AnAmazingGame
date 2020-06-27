@@ -118,9 +118,12 @@ public class Maze {
         }
     }
 
-    //Method to check that the created maze fits requirements
-    //Returns true if verified
-    //Returns false if needs to be regenerated
+    /**
+     * Method to check that the created maze fits requirements
+     * Returns true if verified
+     * Returns false if needs to be regenerated
+     *
+     */
     public boolean verifyMaze(){
         //Check for any zeroes
         for (int i = 0; i < getMazeRows(); i++){

@@ -4,9 +4,6 @@ import ca.cmpt213.a2.model.Model;
 import ca.cmpt213.a2.textui.MazeUI;
 import ca.cmpt213.a2.textui.TextUI;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Main Class to run the code
  * Accesses model and textui
@@ -38,7 +35,11 @@ public class Main {
             int directionChoice;
             do {
                 //Request and get user input with TestUI
-                directionChoice = mainTextUI.getUserInput(mainModel.getTotalNumberOfMonsters(), mainModel.getCurrNumberOfMonsters());
+                directionChoice = mainTextUI.getUserInput(
+                        mainModel.getTotalNumberOfMonsters(),
+                        mainModel.getCurrNumberOfMonsters(),
+                        mainModel.getCurrNumberOfPowers()
+                );
 
                 //stop requesting input if user chose a non-direction option
                 if(directionChoice == 4){
@@ -88,7 +89,7 @@ public class Main {
                 //this triggers all subsequent movements/actions
                 //Move each monster
                for(int i = 0; i < mainModel.getCurrNumberOfMonsters(); i++){
-                   if(mainModel.getModelMonsters()[i].getIsAlive()){
+                   if(mainModel.getModelMonsters()[i].isAlive()){
                        //if the monster is alive, move them
                        mainModel.getModelMonsters()[i].move(
                                mainModel.getModelMonsters()[i].getRow(),
@@ -141,42 +142,35 @@ public class Main {
         //If monster is dead, set row and col to -1 and don't display
         for (int i = 0; i < mainModel.getTotalNumberOfMonsters(); i++){
             //Check if monster is dead
-            if(!mainModel.getModelMonsters()[i].getIsAlive()){
+            if(!mainModel.getModelMonsters()[i].isAlive()){
                 mainModel.getModelMonsters()[i].setRow(-1);
                 mainModel.getModelMonsters()[i].setCol(-1);
             }
 
         }
-
-
         if(mainModel.getCurrNumberOfPowers() == mainModel.getTotalNumberOfPowers()){
             //if all powers have been obtained
             //Don't display power
-            mainMazeUI.placeCharacters(
-                    mainMaze,
-                    mainModel.getModelHero().getRow(),
-                    mainModel.getModelHero().getCol(),
-                    mainModel.getModelMonsterRows(),
-                    mainModel.getModelMonsterCols(),
-                    -1,
-                    -1
-            );
-        }else{
-            //Display power to map
-            mainMazeUI.placeCharacters(
-                    mainMaze,
-                    mainModel.getModelHero().getRow(),
-                    mainModel.getModelHero().getCol(),
-                    mainModel.getModelMonsterRows(),
-                    mainModel.getModelMonsterCols(),
-                    mainModel.getModelPower().getRow(),
-                    mainModel.getModelPower().getCol()
-            );
+            mainModel.getModelPower().setRow(-2);
+            mainModel.getModelPower().setCol(-2);
 
+        }else{
             //only check for power if the hero doesn't have them all yet
-            if (mainModel.checkForPowerPickup())
+            if (mainModel.checkForPowerPickup()){
                 mainTextUI.powerObtained();
+            }
         }
+
+        //Display characters to map
+        mainMazeUI.placeCharacters(
+                mainMaze,
+                mainModel.getModelHero().getRow(),
+                mainModel.getModelHero().getCol(),
+                mainModel.getModelMonsterRows(),
+                mainModel.getModelMonsterCols(),
+                mainModel.getModelPower().getRow(),
+                mainModel.getModelPower().getCol()
+        );
 
         //Display maze
         mainModel.setMazeVisibility();

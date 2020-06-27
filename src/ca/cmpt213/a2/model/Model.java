@@ -140,22 +140,26 @@ public class Model {
             setModelMonsters(new Monster[]{
                     new Monster(), new Monster(), new Monster()
             });
+
         }
 
         //Set first monster
         getModelMonsters()[0].setRow(getCurrentMaze().getMazeRows() - 2);
         getModelMonsters()[0].setCol(getCurrentMaze().getMazeColumns() - 2);
-        getModelMonsters()[0].setIsAlive(true);
+        getModelMonsters()[0].setAlive(true);
+        getModelMonsters()[0].setPreviousMove(-3);
 
         //Set next 2
         if (getTotalNumberOfMonsters() == 3){
             getModelMonsters()[1].setRow(1);
             getModelMonsters()[1].setCol(getCurrentMaze().getMazeColumns() - 2);
-            getModelMonsters()[1].setIsAlive(true);
+            getModelMonsters()[1].setAlive(true);
+            getModelMonsters()[1].setPreviousMove(-3);
 
             getModelMonsters()[2].setRow(getCurrentMaze().getMazeRows() - 2);
             getModelMonsters()[2].setCol(1);
-            getModelMonsters()[2].setIsAlive(true);
+            getModelMonsters()[2].setAlive(true);
+            getModelMonsters()[2].setPreviousMove(-3);
         }
 
         //Set the power in the maze
@@ -167,18 +171,6 @@ public class Model {
         );
 
     }
-
-    //Contains functions for all possible maze actions
-    //implement each as turns, with player movement
-    //move Player, likely formatted as hero.verifyMove() then hero.Move()
-        //setCurrentCell
-        //move Monster
-        //check Power
-        //check Positions
-            //if
-        //check Monster status x 3
-        //get Current Maze
-        //update Maze cells
 
     /**
      * Creates and returns the maze as a 2D array
@@ -273,7 +265,7 @@ public class Model {
      * Compares hero and power locations to pick up the power
      * Returns true if power is obtained, false if not
      * If true, sets power values to obtained and not depleted
-     * Boolean is used to notfy the player of the pick-up
+     * Boolean is used to notify the player of the pick-up
      * Only checks for pickup if not yet obtained
      * If the power has been depleted, place in a new location & reset it
      *
@@ -284,8 +276,17 @@ public class Model {
             //if the player has reached the power
             //increment number of powers
             setCurrNumberOfPowers(getCurrNumberOfPowers() + 1);
-            //set location for new power in maze
-            getModelPower().setRandomLocation(getMainMaze(), getCurrentMaze().getMazeRows(), getCurrentMaze().getMazeColumns());
+
+            //Check is maz number of powers reached
+            if(getCurrNumberOfPowers() == getTotalNumberOfPowers()){
+                getModelPower().setRow(-2);
+                getModelPower().setCol(-2);
+            }else{
+                //If not max number of powers, generate new power
+                //set location for new power in maze
+                getModelPower().setRandomLocation(getMainMaze(), getCurrentMaze().getMazeRows(), getCurrentMaze().getMazeColumns());
+            }
+
             return true;
         }
 

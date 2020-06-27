@@ -15,6 +15,7 @@ public class Monster implements Character{
     private int row;
     private int col;
     private boolean isAlive;
+    private int previousMove;
 
 
     public int getRow() {
@@ -33,12 +34,20 @@ public class Monster implements Character{
         this.col = col;
     }
 
-    public boolean getIsAlive() {
+    public boolean isAlive() {
         return isAlive;
     }
 
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive;
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public int getPreviousMove() {
+        return previousMove;
+    }
+
+    public void setPreviousMove(int previousMove) {
+        this.previousMove = previousMove;
     }
 
     //function to randomly choose move
@@ -116,14 +125,35 @@ public class Monster implements Character{
                 }
             }
 
-            //Randomly pick a move from list
-            Random r = new Random();
-            int max = validMoves.size() - 1;
-            //((max - min) + 1) + min
-            int randChoice = r.nextInt((max - 0) + 1) + 0;
+            //If there is only one choice, choose it
+            if(validMoves.size() == 1){
+                direction = validMoves.get(0);
 
-            //Move to chosen adjacent cell
-            direction = validMoves.get(randChoice);
+            }else{
+                //check for backtracking and drop from the list
+                for (int i = 0; i < validMoves.size(); i++){
+                    if(checkForBacktracking(validMoves.get(i))){
+                        validMoves.remove(i);
+                        break;
+                    }
+                }
+
+                //if only 1 item left, choose it
+                if (validMoves.size() == 1){
+                    direction = validMoves.get(0);
+
+                }else{
+                    //otherwise, randomly select
+                    //Randomly pick a move from list
+                    Random r = new Random();
+                    int max = validMoves.size() - 1;
+                    //((max - min) + 1) + min
+                    int randChoice = r.nextInt((max - 0) + 1) + 0;
+
+                    //Move to chosen adjacent cell
+                    direction = validMoves.get(randChoice);
+                }
+            }
 
             //move to next spot
             if (direction == 0) {
@@ -146,6 +176,9 @@ public class Monster implements Character{
             //Set previous location to a path
             maze[startRow][startCol] = 2;
 
+            //Set previous location
+            setPreviousMove(direction);
+
             //loop until a valid direction can be chosen and moved to
         }while (direction == -1);
 
@@ -157,4 +190,20 @@ public class Monster implements Character{
 
     }
 
+    /**
+     * Checks for monster backtracking
+     * return true if backtracks
+     *
+     */
+    public boolean checkForBacktracking(int direction){
+        if((direction == 0 && getPreviousMove() == 2) || (direction == 2 && getPreviousMove() == 0)){
+            //UP and DOWN
+            return true;
+        } else if((direction == 1 && getPreviousMove() == 3) || (direction == 3 && getPreviousMove() == 1)){
+            //LEFT and RIGHT
+            return true;
+        }
+
+        return false;
+    }
 }

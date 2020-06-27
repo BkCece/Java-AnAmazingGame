@@ -55,12 +55,12 @@ public class TextUI {
      * Returns Up: 0, Left: 1, Down: 2, Right: 3
      * Returns -1 upon error
      */
-    public int getUserInput(int totalNumMonsters, int currNumMonsters){
+    public int getUserInput(int totalNumMonsters, int currNumMonsters, int curNumPowers){
         char charChoice;
         do{
             System.out.println();
             System.out.println("Total number of monsters to be killed: " + totalNumMonsters);
-            System.out.println("Number of powers currently in possession: ");
+            System.out.println("Number of powers currently in possession: " + curNumPowers);
             System.out.println("Number of monsters alive: " + currNumMonsters);
             System.out.println("Enter your move [WASD]: ");
             String choice = input.nextLine();

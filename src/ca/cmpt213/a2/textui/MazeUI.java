@@ -86,15 +86,19 @@ public class MazeUI {
 
     /**
      * Display characters and items
+     * Doesn't display power if all have been obtained
+     * Don't display monster if dead
+     *
      */
     public void placeCharacters(int[][]maze, int heroRow, int heroCol, List<Integer> monsterRows, List<Integer> monsterCols, int powerRow, int powerCol){
-        if (powerRow != -1 || powerCol != -1){
+        if (powerRow != -2 || powerCol != -2){
             //place power ups first
             //only place if not yet obtained and not all powers have been obtained
             maze[powerRow][powerCol] = 5;
         }
 
         //can overwrite with monsters
+        //monsters print on top of powers: can hide powers
         for(int i = 0; i < monsterRows.size(); i++){
             //if row and col aren't negative
             //make sure not to print if monster is dead
@@ -103,6 +107,7 @@ public class MazeUI {
         }
 
         //heroes take precedence over all else
+        //prints on top of other characters
         maze[heroRow][heroCol] = 3;
 
     }
