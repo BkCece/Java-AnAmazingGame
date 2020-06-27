@@ -1,6 +1,7 @@
 package ca.cmpt213.a2.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -66,7 +67,7 @@ public class Maze {
     }
 
     //Recursive function
-    public void findPath(int[][] reMaze, List<int[]> reList){
+    private void findPath(int[][] reMaze, List<int[]> reList){
         //Stop!
         if(reList.isEmpty()){
             return;
@@ -186,20 +187,10 @@ public class Maze {
         return count;
     }
 
-    /**
-     * Used in testing that a proper maze can be displayed
-     * Should not be implemented in fully developed version of the application
-     * Displays maze as 2D array elements with Path: 2, Wall: 1
-     */
-    public void displayMaze(){
-        for (int i = 0; i < getMazeRows(); i++){
-            for (int j = 0; j < getMazeColumns(); j++){
-                System.out.print(maze[i][j] + " ");
-            }
-            System.out.println();
-        }
+    @Override
+    public String toString() {
+        return "Maze{" +
+                "maze=" + Arrays.toString(maze) +
+                '}';
     }
-
-
-
 }

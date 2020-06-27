@@ -1,9 +1,5 @@
 package ca.cmpt213.a2.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 /**
  * Class to manage overall model related concepts to be displayed,
  * including: maze (and its visability), monster, hero, power
@@ -19,7 +15,7 @@ public class Model {
     private int totalNumberOfPowers;
 
     //OBJECTS of classes
-    private Maze currentMaze;
+    private Maze modelMaze;
     private Hero modelHero;
     private Monster[] modelMonsters;
     private Power modelPower;
@@ -60,12 +56,12 @@ public class Model {
         this.totalNumberOfPowers = totalNumberOfPowers;
     }
 
-    public Maze getCurrentMaze() {
-        return currentMaze;
+    public Maze getModelMaze() {
+        return modelMaze;
     }
 
-    public void setCurrentMaze(Maze currentMaze) {
-        this.currentMaze = currentMaze;
+    public void setModelMaze(Maze modelMaze) {
+        this.modelMaze = modelMaze;
     }
 
     public Hero getModelHero() {
@@ -94,7 +90,7 @@ public class Model {
 
     //Return the maze as a 2D array
     public int[][] getMainMaze(){
-        return getCurrentMaze().getMaze();
+        return getModelMaze().getMaze();
     }
 
     public boolean[][] getMazeMapping() {
@@ -128,19 +124,19 @@ public class Model {
         }
 
         //Set first monster
-        getModelMonsters()[0].setRow(getCurrentMaze().getMazeRows() - 2);
-        getModelMonsters()[0].setCol(getCurrentMaze().getMazeColumns() - 2);
+        getModelMonsters()[0].setRow(getModelMaze().getMazeRows() - 2);
+        getModelMonsters()[0].setCol(getModelMaze().getMazeColumns() - 2);
         getModelMonsters()[0].setAlive(true);
         getModelMonsters()[0].setPreviousMove(-3);
 
         //Set next 2
         if (getTotalNumberOfMonsters() == 3){
             getModelMonsters()[1].setRow(1);
-            getModelMonsters()[1].setCol(getCurrentMaze().getMazeColumns() - 2);
+            getModelMonsters()[1].setCol(getModelMaze().getMazeColumns() - 2);
             getModelMonsters()[1].setAlive(true);
             getModelMonsters()[1].setPreviousMove(-3);
 
-            getModelMonsters()[2].setRow(getCurrentMaze().getMazeRows() - 2);
+            getModelMonsters()[2].setRow(getModelMaze().getMazeRows() - 2);
             getModelMonsters()[2].setCol(1);
             getModelMonsters()[2].setAlive(true);
             getModelMonsters()[2].setPreviousMove(-3);
@@ -149,9 +145,9 @@ public class Model {
         //Set the power in the maze
         setModelPower(new Power());
         getModelPower().setRandomLocation(
-                getCurrentMaze().getMaze(),
-                getCurrentMaze().getMazeRows(),
-                getCurrentMaze().getMazeColumns()
+                getModelMaze().getMaze(),
+                getModelMaze().getMazeRows(),
+                getModelMaze().getMazeColumns()
         );
 
     }
@@ -164,15 +160,15 @@ public class Model {
         //Create a new maze
         //Generate maze walls
         do{
-            setCurrentMaze(new Maze());
+            setModelMaze(new Maze());
 
             //Generate maze until it meets requirements
             //check for paths in corners, no zeroes, and at least 2 cycles
-        }while(getCurrentMaze().verifyMaze() == false || getCurrentMaze().addCycles() < 3);
+        }while(getModelMaze().verifyMaze() == false || getModelMaze().addCycles() < 3);
 
         //determine cell contents
         initializeMazeVisibility();
-        return getCurrentMaze();
+        return getModelMaze();
     }
 
 
@@ -182,11 +178,12 @@ public class Model {
      *
      */
     public void initializeMazeVisibility() {
-       setMazeMapping(new boolean[getCurrentMaze().getMazeRows()][getCurrentMaze().getMazeColumns()]);
+       setMazeMapping(new boolean[getModelMaze().getMazeRows()][getModelMaze().getMazeColumns()]);
+        setCurrNumberOfMonsters(getTotalNumberOfMonsters());
 
-        for (int i = 0; i < getCurrentMaze().getMazeRows(); i++){
-            for (int j = 0; j < getCurrentMaze().getMazeColumns(); j++){
-                if(i == 0 || j == 0 || (i == getCurrentMaze().getMazeRows() - 1) || (j == getCurrentMaze().getMazeColumns() - 1)){
+        for (int i = 0; i < getModelMaze().getMazeRows(); i++){
+            for (int j = 0; j < getModelMaze().getMazeColumns(); j++){
+                if(i == 0 || j == 0 || (i == getModelMaze().getMazeRows() - 1) || (j == getModelMaze().getMazeColumns() - 1)){
                     //make visible if cell is on the edges of the maze
                     getMazeMapping()[i][j] = true;
                 }else{
@@ -205,8 +202,8 @@ public class Model {
      *
      */
     public void setMazeVisibility(){
-        for (int i = 0; i < getCurrentMaze().getMazeRows(); i++){
-            for (int j = 0; j < getCurrentMaze().getMazeColumns(); j++){
+        for (int i = 0; i < getModelMaze().getMazeRows(); i++){
+            for (int j = 0; j < getModelMaze().getMazeColumns(); j++){
                 if((i == getModelHero().getRow() - 1) && j == (getModelHero().getCol())){
                     //make visible if adjacent to hero: top
                     getMazeMapping()[i][j] = true;
@@ -234,11 +231,11 @@ public class Model {
     /**
      * Make the entire maze visible
      */
-    public void fullMazeVisibility() {
-        setMazeMapping(new boolean[getCurrentMaze().getMazeRows()][getCurrentMaze().getMazeColumns()]);
+    public void enableFullMazeVisibility() {
+        setMazeMapping(new boolean[getModelMaze().getMazeRows()][getModelMaze().getMazeColumns()]);
 
-        for (int i = 0; i < getCurrentMaze().getMazeRows(); i++){
-            for (int j = 0; j < getCurrentMaze().getMazeColumns(); j++){
+        for (int i = 0; i < getModelMaze().getMazeRows(); i++){
+            for (int j = 0; j < getModelMaze().getMazeColumns(); j++){
                 //make every cell visible
                 getMazeMapping()[i][j] = true;
             }

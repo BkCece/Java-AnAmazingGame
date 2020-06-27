@@ -1,0 +1,8 @@
+CMPT213 Assignment 2 – OOD Explained
+Celina Wright – ckwright
+
+How The Maze Model is Drawn
+How the maze model is drawn is a great demonstration of AnAmazingGame's use of Object-Oriented Design. The Model Class combines the Hero, Monster, Power, and Maze classes together as objects to create a maze that can then be displayed using the UI Classes. Each class itself does not need to interact with the other, instead the Model Class manages them all. This means that the Hero, Monster, Power, and Maze classes could be used in various other methods. For example, an array of monster objects, formed from the Monster Class can be used in the Model so that there can be more than one monster in the maze. Although this particular project forces 3 or 1 monster(s) at initialization and that they be placed in corners, it is possible to expand this to allow the user to enter any amount of monsters that they want in the maze. There would simply need to be a change in monster initialization to pseudo-random locations in the maze. This feature applies to the other classes used with Model, meaning there could potentially be multiple mazes or even heroes.
+
+The Maze Class
+Another example of an object-oriented feature is that the maze generation itself is completely separate from any characters or interactions with them. It contains a private method that only itself can access and this is used in maze generation. The Model Class is what adds characters to the maze and the UI classes print it in the desired format. The Maze Class itself is unbound by format, and can be easily used for any other form of User Interface or with any range of characters, making this a good use of Object-Oriented Design.

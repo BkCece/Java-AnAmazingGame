@@ -22,15 +22,12 @@ public class Main {
         mainTextUI = new TextUI();
 
         mainModel.setTotalNumberOfMonsters(3);
-        initializeMaze(mainModel.getTotalNumberOfMonsters());
-
-        mainModel.setCurrNumberOfMonsters(3);
+        initializeMazeFromModel(mainModel.getTotalNumberOfMonsters());
 
         //make sure only walls, characters, and powers are shown
         //make sure surrounding 8 cells are displayed fully around the hero
         //use MazeUI
-        //INITIAL RENDER AND DISPLAY
-        renderMazeUpdates();
+        renderModelUpdates();
         mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
         do {
@@ -46,7 +43,7 @@ public class Main {
                 //stop requesting input if user chose a non-direction option
                 if(directionChoice == 4){
                     //Display game text
-                    mainTextUI.printInstructions(
+                    mainTextUI.printPlayerInstructions(
                             mainMazeUI.getHeroIcon(),
                             mainMazeUI.getMonsterIcon(),
                             mainMazeUI.getPowerIcon(),
@@ -57,20 +54,20 @@ public class Main {
                 }else if (directionChoice == 5){
                     //Display full maze
                     //Set maze mapping to fully visible
-                    mainModel.fullMazeVisibility();
+                    mainModel.enableFullMazeVisibility();
                     mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
                 }else if(directionChoice == 6){
                     //Cheat Mode
                     mainModel.setTotalNumberOfMonsters(1);
-                    initializeMaze(mainModel.getTotalNumberOfMonsters());
+                    initializeMazeFromModel(mainModel.getTotalNumberOfMonsters());
 
-                    mainTextUI.enterCheatMode();
-                    renderMazeUpdates();
+                    mainTextUI.printCheatModeInstructions();
+                    renderModelUpdates();
                     mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
                 }
-                renderMazeUpdates();
+                //renderModelUpdates();
 
                 //loop while direction is unverified
             } while (!mainModel.getModelHero().verifyMovement(
@@ -82,7 +79,7 @@ public class Main {
 
             //RENDER AGAIN TO CHECK MONSTER ENCOUNTER
             //Need to check before the monster moves
-            renderMazeUpdates();
+            //renderModelUpdates();
 
             //Only run if player chose to move hero
             if(directionChoice >= 0 && directionChoice < 4){
@@ -94,11 +91,11 @@ public class Main {
                         mainMaze
                 );
 
-                renderMazeUpdates();
+                renderModelUpdates();
 
                 //this triggers all subsequent movements/actions
                 //Move each monster
-               for(int i = 0; i < mainModel.getCurrNumberOfMonsters(); i++){
+               for(int i = 0; i < mainModel.getTotalNumberOfMonsters(); i++){
                    if(mainModel.getModelMonsters()[i].isAlive()){
                        //if the monster is alive, move them
                        mainModel.getModelMonsters()[i].move(
@@ -112,7 +109,7 @@ public class Main {
             }
 
             //Display maze
-            renderMazeUpdates();
+            renderModelUpdates();
             mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
             //Continue running while hero is alive and there are heroes left
@@ -120,9 +117,9 @@ public class Main {
         }while (mainModel.getCurrNumberOfMonsters() > 0 && mainModel.getModelHero().isAlive());
 
         if(mainModel.getCurrNumberOfMonsters() == 0 && mainModel.getModelHero().isAlive()){
-            mainTextUI.endGame();
+            mainTextUI.printWinMessage();
         }else if(mainModel.getCurrNumberOfMonsters() > 0 && !mainModel.getModelHero().isAlive()){
-            mainTextUI.playerLost();
+            mainTextUI.printLoseMessage();
         }
 
     }
@@ -130,7 +127,7 @@ public class Main {
     /**
      * Sets initial state for maze, based on the required number of monsters
      */
-    public static void initializeMaze(int numMonsters){
+    private static void initializeMazeFromModel(int numMonsters){
         //trigger maze generation and get the maze array
         mainModel.createMazeModel();
         mainMaze = mainModel.getMainMaze();
@@ -144,7 +141,7 @@ public class Main {
         mainModel.setCurrNumberOfPowers(0);
 
         //Display game text
-        mainTextUI.printInstructions(
+        mainTextUI.printPlayerInstructions(
                 mainMazeUI.getHeroIcon(),
                 mainMazeUI.getMonsterIcon(),
                 mainMazeUI.getPowerIcon(),
@@ -159,7 +156,7 @@ public class Main {
      * Player can see hero, monster(s), and one power at a time
      *
      */
-    public static void renderMazeUpdates(){
+    private static void renderModelUpdates(){
         //If monster is dead, set row and col to -1 and don't display
         for (int i = 0; i < mainModel.getTotalNumberOfMonsters(); i++){
             //Check if monster is dead
@@ -169,7 +166,7 @@ public class Main {
 
             }else{
                 if(mainModel.getModelMonsters()[i].getRow() > 0 && mainModel.getModelMonsters()[i].getCol() > 0){
-                    int monsterEncounterResult = mainModel.getModelMonsters()[i].checkForMonster(
+                    int monsterEncounterResult = mainModel.getModelMonsters()[i].getBattleResult(
                             mainModel.getModelMonsters()[i],
                             mainModel.getCurrNumberOfPowers(),
                             mainModel.getModelHero()
@@ -184,7 +181,7 @@ public class Main {
                         mainModel.getModelMonsters()[i].setAlive(false);
                         mainModel.getModelMonsters()[i].setRow(-1);
                         mainModel.getModelMonsters()[i].setCol(-1);
-                        mainTextUI.monsterKilled();
+                        mainTextUI.printMonsterKilled();
 
                     }else if(monsterEncounterResult == 1){
                         //If 1, sets hero to dead and ends game
@@ -202,8 +199,8 @@ public class Main {
         }else{
             if (mainModel.getModelPower().getRow() >= 0 || mainModel.getModelPower().getCol() >= 0){
                 //only check for power if the hero doesn't have them all yet
-                if (mainModel.getModelPower().checkForPowerPickup(mainModel)){
-                    mainTextUI.powerObtained();
+                if (mainModel.getModelPower().checkIfPowerObtained(mainModel)){
+                    mainTextUI.printPowerObtained();
                 }
             }
 

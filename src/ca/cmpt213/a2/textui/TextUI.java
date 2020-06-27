@@ -26,7 +26,7 @@ public class TextUI {
      * Display Legend: get icons from MazeUI
      * Display Moves: get from main
      */
-    public void printInstructions(char hero, char monster, char power, char wall, char unexplored){
+    public void printPlayerInstructions(char hero, char monster, char power, char wall, char unexplored){
         System.out.println("DIRECTIONS:");
         System.out.println("      Kill all 3 Monsters!");
         System.out.println("LEGEND:");
@@ -76,7 +76,7 @@ public class TextUI {
 
 
             //check if the choice is an acceptable input
-        }while(!validateChoice(charChoice));
+        }while(!checkIfValidChoice(charChoice));
 
         switch (charChoice){
             //Return direction
@@ -111,7 +111,7 @@ public class TextUI {
      * Checks if the input is equal to at least one direction option
      * Returns true if valid input, false if not
      */
-    public boolean validateChoice(char charChoice){
+    public boolean checkIfValidChoice(char charChoice){
         //Movement choices
         if(charChoice == UP_KEY)
             return true;
@@ -144,7 +144,7 @@ public class TextUI {
      * Tell them to view map with 'm'
      *
      */
-    public void enterCheatMode(){
+    public void printCheatModeInstructions(){
         System.out.println("*******************************************************");
         System.out.println("YOU HAVE ENTERED CHEAT MODE!");
         System.out.println("You now only need to defeat 1 monster to win the game.");
@@ -161,7 +161,7 @@ public class TextUI {
      * Display congratulations for the user & thank for playing
      *
      */
-    public void endGame(){
+    public void printWinMessage(){
         System.out.println("<3   <3   <3   <3   <3   <3   <3   <3   <3");
         System.out.println("CONGRATULATIONS! YOU WON!");
         System.out.println("Thanks for playing. PLay again soon!");
@@ -174,19 +174,19 @@ public class TextUI {
      * They will see another on next move
      *
      */
-    public void powerObtained(){
+    public void printPowerObtained(){
         System.out.println("********************************************");
         System.out.println("You have OBTAINED a POWER!!!");
         System.out.println("Use it to defeat a monster.");
         System.out.println("Another power will appear shortly!");
-        System.out.println("            (if you don't have them all yet)");
+        System.out.println("            (if it hasn't already)");
         System.out.println("********************************************");
     }
 
     /**
      * Notify the player that they have killed a monster
      */
-    public void monsterKilled(){
+    public void printMonsterKilled(){
         System.out.println("********************************************");
         System.out.println("You have DEFEATED a MONSTER!!!");
         System.out.println("Good work!");
@@ -196,9 +196,9 @@ public class TextUI {
     /**
      * Notify the player that they have lost
      */
-    public void playerLost(){
+    public void printLoseMessage(){
         System.out.println("********************************************");
-        System.out.println("You were DEFEATED by a MONSTER!!!");
+        System.out.println("You were DEFEATED by MONSTER!!!");
         System.out.println("Better luck next time!");
         System.out.println("********************************************");
     }

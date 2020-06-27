@@ -105,10 +105,12 @@ public class Hero implements Character {
 
     }
 
-    //changes character's status (alive or dead)
-    //also decides to change status or not
-    public void checkStatus(boolean isAlive){
-
+    @Override
+    public String toString() {
+        return "Hero{" +
+                "row=" + row +
+                ", col=" + col +
+                ", isAlive=" + isAlive +
+                '}';
     }
-
 }

@@ -19,4 +19,6 @@ public interface Character {
     //moves character
     void move(int r, int c, int d, int[][] m);
 
+
+
 }

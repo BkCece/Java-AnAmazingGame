@@ -68,7 +68,7 @@ public class Power{
      * If the power has been depleted, place in a new location & reset it
      *
      */
-    public boolean checkForPowerPickup(Model model){
+    public boolean checkIfPowerObtained(Model model){
         //If the power has not been picked up yet
         if ((model.getModelHero().getRow() == getRow()) && (model.getModelHero().getCol() == getCol())){
             //if the player has reached the power
@@ -82,12 +82,20 @@ public class Power{
             }else{
                 //If not max number of powers, generate new power
                 //set location for new power in maze
-                setRandomLocation(model.getMainMaze(), model.getCurrentMaze().getMazeRows(), model.getCurrentMaze().getMazeColumns());
+                setRandomLocation(model.getMainMaze(), model.getModelMaze().getMazeRows(), model.getModelMaze().getMazeColumns());
             }
 
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Power{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
     }
 }

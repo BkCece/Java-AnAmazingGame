@@ -12,11 +12,11 @@ import java.util.List;
  * Run in IntelliJ Terminal
  */
 public class MazeUI {
-    private static final char heroIcon = '♥';
-    private static final char monsterIcon = '♦';
-    private static final char powerIcon = '♪';
-    private static final char wallIcon = '█';
-    private static final char unexploredIcon = '░';
+    private static final char heroIcon = '@';
+    private static final char monsterIcon = '!';
+    private static final char powerIcon = '$';
+    private static final char wallIcon = '#';
+    private static final char unexploredIcon = '.';
     private static final char exploredIcon = ' ';
 
     //Set and get all icons for characters and powers

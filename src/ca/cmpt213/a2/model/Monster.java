@@ -56,7 +56,7 @@ public class Monster implements Character{
      * Monster only moves over one cell left, right, up, or down
      *
      */
-    public boolean verifyMovement(int direction, int[][] maze, int ro, int col){
+    public boolean verifyMovement(int direction, int[][] maze, int row, int col){
 
         //Check given direction for validity
         switch (direction){
@@ -122,7 +122,7 @@ public class Monster implements Character{
             }else{
                 //check for backtracking and drop from the list
                 for (int i = 0; i < validMoves.size(); i++){
-                    if(checkForBacktracking(validMoves.get(i))){
+                    if(checkIfBacktracking(validMoves.get(i))){
                         validMoves.remove(i);
                         break;
                     }
@@ -172,7 +172,7 @@ public class Monster implements Character{
      * return true if backtracks
      *
      */
-    public boolean checkForBacktracking(int direction){
+    public boolean checkIfBacktracking(int direction){
         if((direction == 0 && getPreviousMove() == 2) || (direction == 2 && getPreviousMove() == 0)){
             //UP and DOWN
             return true;
@@ -192,7 +192,7 @@ public class Monster implements Character{
      * If 2, don't change anything: no encounter
      *
      */
-    public int checkForMonster(Monster monster, int numPower, Hero hero){
+    public int getBattleResult(Monster monster, int numPower, Hero hero){
         //Check if positions are the same
         if((hero.getRow() == monster.getRow()) && (hero.getCol() == monster.getCol())){
             //if hero finds monster
@@ -207,5 +207,15 @@ public class Monster implements Character{
 
         //hero doesn't find monster
         return 2;
+    }
+
+    @Override
+    public String toString() {
+        return "Monster{" +
+                "row=" + row +
+                ", col=" + col +
+                ", isAlive=" + isAlive +
+                ", previousMove=" + previousMove +
+                '}';
     }
 }
