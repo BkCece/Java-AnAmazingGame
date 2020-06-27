@@ -1,5 +1,7 @@
 package ca.cmpt213.a2.textui;
 
+import ca.cmpt213.a2.model.Monster;
+
 import java.util.List;
 
 /**
@@ -90,7 +92,7 @@ public class MazeUI {
      * Don't display monster if dead
      *
      */
-    public void placeCharacters(int[][]maze, int heroRow, int heroCol, List<Integer> monsterRows, List<Integer> monsterCols, int powerRow, int powerCol){
+    public void placeCharacters(int[][]maze, int heroRow, int heroCol, Monster[] monsters, int numMonsters, int powerRow, int powerCol){
         if (powerRow != -2 || powerCol != -2){
             //place power ups first
             //only place if not yet obtained and not all powers have been obtained
@@ -99,11 +101,11 @@ public class MazeUI {
 
         //can overwrite with monsters
         //monsters print on top of powers: can hide powers
-        for(int i = 0; i < monsterRows.size(); i++){
+        for(int i = 0; i < numMonsters; i++){
             //if row and col aren't negative
             //make sure not to print if monster is dead
-            if(monsterRows.get(i) != -1 && monsterCols.get(i) != -1)
-                maze[monsterRows.get(i)][monsterCols.get(i)] = 4;
+            if(monsters[i].getRow() > 0 && monsters[i].getCol() > 0 && monsters[i].isAlive())
+                maze[monsters[i].getRow()][monsters[i].getCol()] = 4;
         }
 
         //heroes take precedence over all else

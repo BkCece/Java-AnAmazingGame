@@ -206,4 +206,31 @@ public class Monster implements Character{
 
         return false;
     }
+
+    /**
+     * Compares hero and 1 monster location to pick up the power
+     * Returns 0: monster killed 1: hero killed, 2: no monster
+     * If 0, sets monster to dead and power to depleted (decrease power count)
+     * If 1, sets hero to dead and ends game
+     * If 2, don't change anything: no encounter
+     *
+     */
+    public int checkForMonster(Monster monster, int numPower, Hero hero){
+        System.out.println("hero r: " + hero.getRow() + ", c: " + hero.getCol());
+        System.out.println("mons c: " + monster.getRow() + " c: " + monster.getCol());
+
+        if((hero.getRow() == monster.getRow()) && (hero.getCol() == monster.getCol())){
+            //if hero finds monster
+            if(numPower > 0){
+                return 0;
+
+            }else{
+                //hero killed
+                return 1;
+            }
+        }
+
+        //hero doesn't find monster
+        return 2;
+    }
 }

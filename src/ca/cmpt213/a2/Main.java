@@ -29,9 +29,11 @@ public class Main {
         //make sure only walls, characters, and powers are shown
         //make sure surrounding 8 cells are displayed fully around the hero
         //use MazeUI
-        do {
-            renderMazeUpdates();
+        //INITIAL RENDER AND DISPLAY
+        renderMazeUpdates();
+        mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
+        do {
             int directionChoice;
             do {
                 //Request and get user input with TestUI
@@ -65,8 +67,10 @@ public class Main {
 
                     mainTextUI.enterCheatMode();
                     renderMazeUpdates();
+                    mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
                 }
+                renderMazeUpdates();
 
                 //loop while direction is unverified
             } while (!mainModel.getModelHero().verifyMovement(
@@ -75,6 +79,10 @@ public class Main {
                     mainModel.getModelHero().getRow(),
                     mainModel.getModelHero().getCol()
             ));
+
+            //RENDER AGAIN TO CHECK MONSTER ENCOUNTER
+            //Need to check before the monster moves
+            renderMazeUpdates();
 
             //Only run if player chose to move hero
             if(directionChoice >= 0 && directionChoice < 4){
@@ -85,6 +93,8 @@ public class Main {
                         directionChoice,
                         mainMaze
                 );
+
+                renderMazeUpdates();
 
                 //this triggers all subsequent movements/actions
                 //Move each monster
@@ -101,9 +111,20 @@ public class Main {
                }
             }
 
-        }while (mainModel.getCurrNumberOfMonsters() != 0);
+            //Display maze
+            renderMazeUpdates();
+            mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
 
-        mainTextUI.endGame();
+            //Continue running while hero is alive and there are heroes left
+            //Ends game if player dies or all monsters are dead
+        }while (mainModel.getCurrNumberOfMonsters() > 0 && mainModel.getModelHero().isAlive());
+
+        if(mainModel.getCurrNumberOfMonsters() == 0 && mainModel.getModelHero().isAlive()){
+            mainTextUI.endGame();
+        }else if(mainModel.getCurrNumberOfMonsters() > 0 && !mainModel.getModelHero().isAlive()){
+            mainTextUI.playerLost();
+        }
+
     }
 
     /**
@@ -145,8 +166,33 @@ public class Main {
             if(!mainModel.getModelMonsters()[i].isAlive()){
                 mainModel.getModelMonsters()[i].setRow(-1);
                 mainModel.getModelMonsters()[i].setCol(-1);
-            }
 
+            }else{
+                if(mainModel.getModelMonsters()[i].getRow() > 0 && mainModel.getModelMonsters()[i].getCol() > 0){
+                    int monsterEncounterResult = mainModel.getModelMonsters()[i].checkForMonster(
+                            mainModel.getModelMonsters()[i],
+                            mainModel.getCurrNumberOfPowers(),
+                            mainModel.getModelHero()
+                    );
+
+                    if(monsterEncounterResult == 0){
+                        //If 0, monster is dead: reduce monster count
+                        //monster killed
+                        mainModel.setCurrNumberOfPowers(mainModel.getCurrNumberOfPowers() - 1);
+                        mainModel.setCurrNumberOfMonsters(mainModel.getCurrNumberOfMonsters() - 1);
+
+                        mainModel.getModelMonsters()[i].setAlive(false);
+                        mainModel.getModelMonsters()[i].setRow(-1);
+                        mainModel.getModelMonsters()[i].setCol(-1);
+                        mainTextUI.monsterKilled();
+
+                    }else if(monsterEncounterResult == 1){
+                        //If 1, sets hero to dead and ends game
+                        mainModel.getModelHero().setAlive(false);
+                        System.out.println("hero set to dead: " + mainModel.getModelHero().isAlive());
+                    }
+                }
+            }
         }
         if(mainModel.getCurrNumberOfPowers() == mainModel.getTotalNumberOfPowers()){
             //if all powers have been obtained
@@ -155,10 +201,13 @@ public class Main {
             mainModel.getModelPower().setCol(-2);
 
         }else{
-            //only check for power if the hero doesn't have them all yet
-            if (mainModel.getModelPower().checkForPowerPickup(mainModel)){
-                mainTextUI.powerObtained();
+            if (mainModel.getModelPower().getRow() >= 0 || mainModel.getModelPower().getCol() >= 0){
+                //only check for power if the hero doesn't have them all yet
+                if (mainModel.getModelPower().checkForPowerPickup(mainModel)){
+                    mainTextUI.powerObtained();
+                }
             }
+
         }
 
         //Display characters to map
@@ -166,15 +215,15 @@ public class Main {
                 mainMaze,
                 mainModel.getModelHero().getRow(),
                 mainModel.getModelHero().getCol(),
-                mainModel.getModelMonsterRows(),
-                mainModel.getModelMonsterCols(),
+                mainModel.getModelMonsters(),
+                mainModel.getTotalNumberOfMonsters(),
                 mainModel.getModelPower().getRow(),
                 mainModel.getModelPower().getCol()
         );
 
         //Display maze
         mainModel.setMazeVisibility();
-        mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
+        //mainMazeUI.displayMazeUI(mainMaze, mainModel.getMazeMapping());
     }
 
 }

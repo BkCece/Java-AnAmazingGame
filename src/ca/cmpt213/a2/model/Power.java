@@ -75,7 +75,7 @@ public class Power{
             //increment number of powers
             model.setCurrNumberOfPowers(model.getCurrNumberOfPowers() + 1);
 
-            //Check is maz number of powers reached
+            //Check if max number of powers reached
             if(model.getCurrNumberOfPowers() == model.getTotalNumberOfPowers()){
                 setRow(-2);
                 setCol(-2);

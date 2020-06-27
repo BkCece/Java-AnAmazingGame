@@ -171,15 +171,35 @@ public class TextUI {
 
     /**
      * Notify the player that they obtained a power
-     * They will not see another until they have killed a monster
+     * They will see another on next move
      *
      */
     public void powerObtained(){
         System.out.println("********************************************");
-        System.out.println("You have obtained a POWER!!!");
+        System.out.println("You have OBTAINED a POWER!!!");
         System.out.println("Use it to defeat a monster.");
         System.out.println("Another power will appear shortly!");
         System.out.println("            (if you don't have them all yet)");
+        System.out.println("********************************************");
+    }
+
+    /**
+     * Notify the player that they have killed a monster
+     */
+    public void monsterKilled(){
+        System.out.println("********************************************");
+        System.out.println("You have DEFEATED a MONSTER!!!");
+        System.out.println("Good work!");
+        System.out.println("********************************************");
+    }
+
+    /**
+     * Notify the player that they have lost
+     */
+    public void playerLost(){
+        System.out.println("********************************************");
+        System.out.println("You were DEFEATED by a MONSTER!!!");
+        System.out.println("Better luck next time!");
         System.out.println("********************************************");
     }
 }

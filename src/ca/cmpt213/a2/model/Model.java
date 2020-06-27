@@ -44,22 +44,6 @@ public class Model {
         this.totalNumberOfMonsters = totalNumberOfMonsters;
     }
 
-    public List<Integer> getModelMonsterRows(){
-        List<Integer> monsterRows = new ArrayList<>();
-        for(int i = 0; i < getCurrNumberOfMonsters(); i++){
-            monsterRows.add(getModelMonsters()[i].getRow());
-        }
-        return monsterRows;
-    }
-
-    public List<Integer> getModelMonsterCols(){
-        List<Integer> monsterCols = new ArrayList<>();
-        for(int i = 0; i < getCurrNumberOfMonsters(); i++){
-            monsterCols.add(getModelMonsters()[i].getCol());
-        }
-        return monsterCols;
-    }
-
     public int getCurrNumberOfPowers() {
         return currNumberOfPowers;
     }
