@@ -156,7 +156,7 @@ public class Main {
 
         }else{
             //only check for power if the hero doesn't have them all yet
-            if (mainModel.checkForPowerPickup()){
+            if (mainModel.getModelPower().checkForPowerPickup(mainModel)){
                 mainTextUI.powerObtained();
             }
         }

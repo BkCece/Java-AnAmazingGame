@@ -18,28 +18,6 @@ public class Power{
     private int row;
     private int col;
 
-    /**
-    public boolean getIsObtained() {
-
-        return isObtained;
-    }
-
-    public void setIsObtained(boolean isObtained) {
-
-        this.isObtained = isObtained;
-    }
-
-    public boolean getIsDepleted() {
-
-        return isDepleted;
-    }
-
-    public void setIsDepleted(boolean isDepleted) {
-
-        this.isDepleted = isDepleted;
-    }
-     */
-
     public int getRow() {
         return row;
     }
@@ -79,5 +57,37 @@ public class Power{
 
         setRow(randRow);
         setCol(randCol);
+    }
+
+    /**
+     * Compares hero and power locations to pick up the power
+     * Returns true if power is obtained, false if not
+     * If true, sets power values to obtained and not depleted
+     * Boolean is used to notify the player of the pick-up
+     * Only checks for pickup if not yet obtained
+     * If the power has been depleted, place in a new location & reset it
+     *
+     */
+    public boolean checkForPowerPickup(Model model){
+        //If the power has not been picked up yet
+        if ((model.getModelHero().getRow() == getRow()) && (model.getModelHero().getCol() == getCol())){
+            //if the player has reached the power
+            //increment number of powers
+            model.setCurrNumberOfPowers(model.getCurrNumberOfPowers() + 1);
+
+            //Check is maz number of powers reached
+            if(model.getCurrNumberOfPowers() == model.getTotalNumberOfPowers()){
+                setRow(-2);
+                setCol(-2);
+            }else{
+                //If not max number of powers, generate new power
+                //set location for new power in maze
+                setRandomLocation(model.getMainMaze(), model.getCurrentMaze().getMazeRows(), model.getCurrentMaze().getMazeColumns());
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
