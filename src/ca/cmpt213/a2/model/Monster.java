@@ -50,50 +50,40 @@ public class Monster implements Character{
         this.previousMove = previousMove;
     }
 
-    //function to randomly choose move
-    //each monster as separate object, called in Model Class
-    //use random class to choose between 0-3
-    //call movement functions
-        //verify
-        //move
-
-    //isAlive attribute
-    //get and set for xPosition & yPosition
-
     /**
      *
      * Randomly chooses a valid path for the monster to take
      * Monster only moves over one cell left, right, up, or down
      *
      */
-    public boolean verifyMovement(int direction, int[][] maze, int monstRow, int monstCol){
+    public boolean verifyMovement(int direction, int[][] maze, int ro, int col){
 
         //Check given direction for validity
         switch (direction){
             case 0:
                 //UP is a wall
-                if(maze[monstRow - 1][monstCol] == 1)
+                if(maze[row - 1][col] == 1)
                     return false;
                 else
                     return true;
 
             case 1:
                 //LEFT is a wall
-                if(maze[monstRow][monstCol - 1] == 1)
+                if(maze[row][col - 1] == 1)
                     return false;
                 else
                     return true;
 
             case 2:
                 //DOWN is a wall
-                if(maze[monstRow + 1][monstCol] == 1)
+                if(maze[row + 1][col] == 1)
                     return false;
                 else
                     return true;
 
             case 3:
                 //RIGHT is a wall
-                if(maze[monstRow][monstCol + 1] == 1)
+                if(maze[row][col + 1] == 1)
                     return false;
                 else
                     return true;
@@ -137,12 +127,6 @@ public class Monster implements Character{
                         break;
                     }
                 }
-
-                //if only 1 item left, choose it
-                if (validMoves.size() == 1){
-                    direction = validMoves.get(0);
-
-                }else{
                     //otherwise, randomly select
                     //Randomly pick a move from list
                     Random r = new Random();
@@ -152,7 +136,6 @@ public class Monster implements Character{
 
                     //Move to chosen adjacent cell
                     direction = validMoves.get(randChoice);
-                }
             }
 
             //move to next spot
@@ -184,12 +167,6 @@ public class Monster implements Character{
 
     }
 
-    //changes character's status (alive or dead)
-    //also decides to change status or not
-    public void checkStatus(boolean isAlive){
-
-    }
-
     /**
      * Checks for monster backtracking
      * return true if backtracks
@@ -216,9 +193,7 @@ public class Monster implements Character{
      *
      */
     public int checkForMonster(Monster monster, int numPower, Hero hero){
-        System.out.println("hero r: " + hero.getRow() + ", c: " + hero.getCol());
-        System.out.println("mons c: " + monster.getRow() + " c: " + monster.getCol());
-
+        //Check if positions are the same
         if((hero.getRow() == monster.getRow()) && (hero.getCol() == monster.getCol())){
             //if hero finds monster
             if(numPower > 0){

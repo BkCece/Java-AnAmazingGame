@@ -189,7 +189,6 @@ public class Main {
                     }else if(monsterEncounterResult == 1){
                         //If 1, sets hero to dead and ends game
                         mainModel.getModelHero().setAlive(false);
-                        System.out.println("hero set to dead: " + mainModel.getModelHero().isAlive());
                     }
                 }
             }
