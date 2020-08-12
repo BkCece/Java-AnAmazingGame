@@ -12,10 +12,31 @@ This repository includes assignment 2 from the course, roughly two months into t
 
 ## My Maze Generation Logic
 **Maze Generation Rules: **
-    1. Monsters spawn in the four corners, so no walls there
+    1. Monsters spawn in the four corners, so no walls can be placed there
     2. There must be multiple paths through the maze
-    3. No closed off rooms, only paths
-    4. There must not be a 2x2 of walls or cells
+    3. Closed-off rooms must be removed: only paths are allowed
+    4. There must not be a 2x2 space of walls or of cells
+**My Maze Generation Algorithm**
+
+References:
+- [Prim's Algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
+- [Maze Generation Algorithms](https://en.wikipedia.org/wiki/Maze_generation_algorithm)
+
+My Algorithm:
+- A variation of Prim's Algorithm, using a 2D-Array and Recursion
+- I define untouched space as 0, walls as 1 and paths as 2
+- I set the outer border's walls and label the rest as untoched space
+- I get the "current cell" and store any adjacent, non-wall cells in a list
+- My findPath() method recurses:
+  - It randomly chooses an adjacent cell from the list and checks its adjacent cells for a valid path 
+  - I increment a counter if the path is valid
+  - Any empty cells are added to a list
+  - The recursion ends when the first list is empty
+- My maze is verified (to fit the rules) through the verifyMaz() method
+  - Rule violations lead to maze re-generation
+  
+  
+  
 
 ## Components and Tools
 - This Repository includes **Class-Responsibility-Collaborator (CRC) Cards** for this project's **Object-Oriented Design (OOD)**
