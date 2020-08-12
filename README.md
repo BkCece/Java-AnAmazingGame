@@ -72,8 +72,3 @@ Uses:
 ### A Finished Game - Win
 ![Game Win](images/Maze_Win.JPG)
 
-## Resources
-- Brian Fraser's [Deserializing JSON tutorial](https://youtu.be/HSuVtkdej8Q)
-- Marvel Heroes' [Height scale](https://marvel.fandom.com/wiki/Height_Scale)
-- DC Heroes' [Height Scale](https://dc.fandom.com/wiki/Category:Height)
-
