@@ -11,7 +11,7 @@ This repository includes assignment 2 from the course, roughly two months into t
   - Maze walls become visible when the player is adjacent to them 
 
 ## My Maze Generation Logic
-**Maze Generation Rules: **
+**Maze Generation Rules:**
     1. Monsters spawn in the four corners, so no walls can be placed there
     2. There must be multiple paths through the maze
     3. Closed-off rooms must be removed: only paths are allowed
